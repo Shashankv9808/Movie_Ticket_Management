@@ -1,0 +1,14 @@
+.hidden {
+	display: none;
+}
+
+body.ios-noscroll {
+	position: fixed;
+	left: 0;
+	right: 0;
+}
+
+body.non-ios-noscroll {
+	overflow: hidden;
+	position: relative;
+}
