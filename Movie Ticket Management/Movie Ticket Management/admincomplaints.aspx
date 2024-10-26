@@ -36,7 +36,7 @@
                     <asp:BoundField DataField="date" HeaderText="date" SortExpression="date" />
                 </Columns>
             </asp:GridView>
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:movieConnectionString %>" DeleteCommand="DELETE FROM [feedback] WHERE [Id] = @Id" InsertCommand="INSERT INTO [feedback] ([Username], [feedback], [date]) VALUES (@Username, @feedback, @date)" SelectCommand="SELECT * FROM [feedback]" UpdateCommand="UPDATE [feedback] SET [Username] = @Username, [feedback] = @feedback, [date] = @date WHERE [Id] = @Id">
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DatabaseConnectString %>" DeleteCommand="DELETE FROM [feedback] WHERE [Id] = @Id" InsertCommand="INSERT INTO [feedback] ([Username], [feedback], [date]) VALUES (@Username, @feedback, @date)" SelectCommand="SELECT * FROM [feedback]" UpdateCommand="UPDATE [feedback] SET [Username] = @Username, [feedback] = @feedback, [date] = @date WHERE [Id] = @Id">
                 <DeleteParameters>
                     <asp:Parameter Name="Id" Type="Int32" />
                 </DeleteParameters>

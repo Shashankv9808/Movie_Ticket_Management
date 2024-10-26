@@ -6,13 +6,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
+using System.Web.UI.HtmlControls;
 
 namespace Movie_Ticket_Management
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
         public string a, rating;
-        SqlConnection conn = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection connection_string = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,31 +32,36 @@ namespace Movie_Ticket_Management
             Image heart = new Image();
             for (int i = 1; i <= 8; i++)
             {
-                SqlCommand movi = new SqlCommand("select * from movielist where Id='" + i + "'", conn);
-                conn.Open();
-                SqlDataReader rd = movi.ExecuteReader();
-                while (rd.Read())
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString))
                 {
-                    a = rd[1].ToString();
-                    rating = rd[8].ToString();
+                    using (SqlCommand command = new SqlCommand("select * from movielist where Id='" + i + "'", connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader rd = command.ExecuteReader())
+                        {
+                            while (rd.Read())
+                            {
+                                a = rd[1].ToString();
+                                rating = rd[8].ToString();
+                            }
+                        }
+                    }
+
                 }
-                conn.Close();
-                System.Web.UI.HtmlControls.HtmlGenericControl createDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+                HtmlGenericControl createDiv = new HtmlGenericControl("DIV");
                 createDiv.ID = "createDiv" + i;
                 createDiv.Attributes.Add("class", "c1");
-                string cs = System.Configuration.ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(cs))
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString))
                 {
-                    SqlCommand cmd = new SqlCommand("spGetImageById", con);
+                    SqlCommand cmd = new SqlCommand("spGetImageById", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
-
                     SqlParameter paramId = new SqlParameter()
                     {
                         ParameterName = "@Id",
                         Value = i
                     };
                     cmd.Parameters.Add(paramId);
-                    con.Open();
+                    connection.Open();
                     byte[] bytes = (byte[])cmd.ExecuteScalar();
                     string strBase64 = Convert.ToBase64String(bytes);
                     string cc = "\"";
@@ -76,10 +83,10 @@ namespace Movie_Ticket_Management
             if (searchtxt.Text != null)
             {
                 string movien = "select count(*) from movielist where Name='" + searchtxt.Text + "'";
-                SqlCommand cmd = new SqlCommand(movien, conn);
-                conn.Open();
+                SqlCommand cmd = new SqlCommand(movien, connection_string);
+                connection_string.Open();
                 int check = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-                conn.Close();
+                connection_string.Close();
                 if (check == 1)
                 {
                     Session["moviename"] = searchtxt.Text;
@@ -106,5 +113,5 @@ namespace Movie_Ticket_Management
         {
             Response.Redirect("homepage.aspx");
         }
-    } 
+    }
 }

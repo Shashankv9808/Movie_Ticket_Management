@@ -36,7 +36,7 @@
                 <asp:CommandField ShowDeleteButton="True" />
             </Columns>
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:movieConnectionString %>" DeleteCommand="DELETE FROM [movielist] WHERE [ID] = @ID" InsertCommand="INSERT INTO [movielist] ([Name], [hero], [heroin], [director], [story], [gener], [cost], [rating], [duration]) VALUES (@Name, @hero, @heroin, @director, @story, @gener, @cost, @rating, @duration)" SelectCommand="SELECT * FROM [movielist]" UpdateCommand="UPDATE [movielist] SET [Name] = @Name, [hero] = @hero, [heroin] = @heroin, [director] = @director, [story] = @story, [gener] = @gener, [cost] = @cost, [rating] = @rating, [duration] = @duration WHERE [ID] = @ID">
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DatabaseConnectString %>" DeleteCommand="DELETE FROM [movielist] WHERE [ID] = @ID" InsertCommand="INSERT INTO [movielist] ([Name], [hero], [heroin], [director], [story], [gener], [cost], [rating], [duration]) VALUES (@Name, @hero, @heroin, @director, @story, @gener, @cost, @rating, @duration)" SelectCommand="SELECT * FROM [movielist]" UpdateCommand="UPDATE [movielist] SET [Name] = @Name, [hero] = @hero, [heroin] = @heroin, [director] = @director, [story] = @story, [gener] = @gener, [cost] = @cost, [rating] = @rating, [duration] = @duration WHERE [ID] = @ID">
             <DeleteParameters>
                 <asp:Parameter Name="ID" Type="Decimal" />
             </DeleteParameters>

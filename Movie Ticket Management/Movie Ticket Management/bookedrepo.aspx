@@ -35,7 +35,7 @@
                 <asp:BoundField DataField="seats" HeaderText="seats" SortExpression="seats" />
             </Columns>
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:movieConnectionString %>" SelectCommand="SELECT * FROM [bookedinfo]"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DatabaseConnectString %>" SelectCommand="SELECT * FROM [bookedinfo]"></asp:SqlDataSource>
         <asp:ImageButton ID="ImageButton1" runat="server" CssClass="auto-style2" ImageUrl="~/images/back.jpg" OnClick="ImageButton1_Click" />
     </form>
 </body>

@@ -36,7 +36,7 @@
                     <asp:BoundField DataField="email" HeaderText="email" SortExpression="email" />
                 </Columns>
             </asp:GridView>
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:movieConnectionString %>" SelectCommand="SELECT * FROM [register]"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DatabaseConnectString %>" SelectCommand="SELECT * FROM [register]"></asp:SqlDataSource>
             <asp:ImageButton ID="ImageButton1" runat="server" CssClass="auto-style2" OnClick="ImageButton1_Click" ImageUrl="~/images/back.jpg" />
             <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Engravers MT" Font-Size="X-Large" ForeColor="Lime" style="top: 48px; left: 315px; position: absolute; height: 61px; width: 488px" Text="No. of User And Details"></asp:Label>
         </div>
