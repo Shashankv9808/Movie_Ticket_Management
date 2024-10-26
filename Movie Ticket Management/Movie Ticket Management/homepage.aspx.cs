@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data.SqlClient;
-using System.Data;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace Movie_Ticket_Management
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class WebForm1 : Page
     {
         public string a, rating;
         protected void Page_Load(object sender, EventArgs e)
@@ -80,20 +77,21 @@ namespace Movie_Ticket_Management
         {
             if (searchtxt.Text != null)
             {
-                string movien = "select count(*) from movielist where Name='" + searchtxt.Text + "'";
-                SqlCommand cmd = new SqlCommand(movien, connection_string);
-                connection_string.Open();
-                int check = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-                connection_string.Close();
-                if (check == 1)
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString))
                 {
-                    Session["moviename"] = searchtxt.Text;
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Movie does not exist in database,please search for another movie')</script>");
-                    Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                    SqlCommand command = new SqlCommand("select count(*) from movielist where Name='" + searchtxt.Text + "'", connection);
+                    connection.Open();
+                    int check = Convert.ToInt32(command.ExecuteScalar().ToString());
+                    if (check == 1)
+                    {
+                        Session["moviename"] = searchtxt.Text;
+                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Movie does not exist in database,please search for another movie')</script>");
+                        Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                    }
                 }
             }
             else

@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Movie_Ticket_Management/v17
+/Movie Ticket Management/.vs/Movie Ticket Management
+/Movie Ticket Management/Movie Ticket Management/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Movie Ticket Management/Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.AssemblyReference.cache
