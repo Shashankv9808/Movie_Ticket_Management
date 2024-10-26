@@ -14,8 +14,6 @@ namespace Movie_Ticket_Management
     public partial class WebForm1 : System.Web.UI.Page
     {
         public string a, rating;
-        SqlConnection connection_string = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
-
         protected void Page_Load(object sender, EventArgs e)
         {
 
