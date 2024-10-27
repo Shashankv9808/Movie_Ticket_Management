@@ -1,9 +1,7 @@
-﻿using AjaxControlToolkit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.IO;
 
 namespace Movie_Ticket_Management.DataAccess
 {
@@ -17,7 +15,7 @@ namespace Movie_Ticket_Management.DataAccess
             {
                 using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
                 {
-                    using (SqlCommand command = new SqlCommand("SELECT ID,Name,hero,heroin,director,story,gener,cost,rating,duration FROM movielist", connection))
+                    using (SqlCommand command = new SqlCommand("spGetAllMovieDetails", connection))
                     {
                         connection.Open();
                         using (SqlDataReader rd = command.ExecuteReader())
@@ -26,16 +24,18 @@ namespace Movie_Ticket_Management.DataAccess
                             {
                                 HomePageDataInfo info = new HomePageDataInfo()
                                 {
-                                    MovieID = (int)rd.GetDecimal(HomePageDataInfoFields.MovieID),
+                                    MovieID = (int)rd.GetInt64(HomePageDataInfoFields.MovieID),
                                     MovieName = rd.GetString(HomePageDataInfoFields.MovieName),
                                     HeroName = rd.GetString(HomePageDataInfoFields.Hero),
                                     HeroinName = rd.GetString(HomePageDataInfoFields.Heroin),
-                                    Director = rd.GetString(HomePageDataInfoFields.Director),
-                                    Story = rd.GetString(HomePageDataInfoFields.Story),
+                                    DirectorName = rd.GetString(HomePageDataInfoFields.Director),
+                                    StoryWriterName = rd.GetString(HomePageDataInfoFields.Story),
                                     Genre = rd.GetString(HomePageDataInfoFields.Genre),
-                                    Cost = rd.GetString(HomePageDataInfoFields.Cost),
+                                    Cost = rd.GetDecimal(HomePageDataInfoFields.Cost),
                                     Rating = rd.GetDecimal(HomePageDataInfoFields.Rating),
-                                    Duration = rd.GetDecimal(HomePageDataInfoFields.Duration)
+                                    Duration = rd.GetDecimal(HomePageDataInfoFields.Duration),
+                                    ImageSize = rd.GetInt32(HomePageDataInfoFields.ImageSize),
+                                    ImageData = Convert.ToBase64String((byte[])rd.GetSqlBinary(HomePageDataInfoFields.ImageData))
                                 };
                                 all_movie_list.Add(info);
                             }

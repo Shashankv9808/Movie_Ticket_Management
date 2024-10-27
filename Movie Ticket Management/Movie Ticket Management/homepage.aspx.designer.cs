@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Movie_Ticket_Management {
-    
-    
-    public partial class WebForm1 {
-        
+namespace Movie_Ticket_Management
+{
+
+
+    public partial class WebForm1
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// mySidenav control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mySidenav;
-        
+
         /// <summary>
         /// PlaceHolder2 control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder2;
-        
+
         /// <summary>
         /// btnBeforeOk control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnBeforeOk;
-        
+
         /// <summary>
         /// welcomeuser control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label welcomeuser;
-        
+
         /// <summary>
         /// signinbtn control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button signinbtn;
-        
+
         /// <summary>
         /// logoimgbtn control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton logoimgbtn;
-        
+
         /// <summary>
         /// searchimgbtn control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton searchimgbtn;
-        
+
         /// <summary>
         /// searchtxt control.
         /// </summary>
@@ -92,16 +94,16 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox searchtxt;
-        
+
         /// <summary>
-        /// PlaceHolder1 control.
+        /// MovieRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder1;
-        
+        protected global::System.Web.UI.WebControls.Repeater MovieRepeater;
+
         /// <summary>
         /// Label1 control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-        
+
         /// <summary>
         /// HyperLink1 control.
         /// </summary>

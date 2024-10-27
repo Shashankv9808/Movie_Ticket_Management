@@ -18,7 +18,13 @@ namespace Movie_Ticket_Management
 
             Session["pay"] = "no";
             Session["page"] = "homepage.aspx";
-            if (Session["user"] != null)
+            if(!IsPostBack)
+            {
+                List<HomePageDataInfo> movieList = HomePageDataAccess.GetMovieDataList();
+                MovieRepeater.DataSource = movieList;
+                MovieRepeater.DataBind();
+            }
+            else if (Session["user"] != null)
             {
                 welcomeuser.Visible = true;
                 welcomeuser.Text = "Welcome " + Session["user"].ToString();
@@ -26,40 +32,23 @@ namespace Movie_Ticket_Management
                 btnBeforeOk.Visible = true;
                 PlaceHolder2.Visible = true;
             }
-            BuildMoviePoster();
         }
-        private void BuildMoviePoster()
+        protected void MovieRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            Image heart = new Image();
-            List<HomePageDataInfo> movie_list = HomePageDataAccess.GetMovieDataList();
-            for (int index = 1; index <= 8; index++)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+
             {
-                HomePageDataInfo movie_data_info = movie_list[index];
-                HtmlGenericControl createDiv = new HtmlGenericControl("DIV");
-                createDiv.ID = "createDiv" + index;
-                createDiv.Attributes.Add("class", "c1");
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("spGetImageById", connection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter paramId = new SqlParameter()
-                    {
-                        ParameterName = "@Id",
-                        Value = movie_data_info.MovieID
-                    };
-                    cmd.Parameters.Add(paramId);
-                    connection.Open();
-                    byte[] bytes = (byte[])cmd.ExecuteScalar();
-                    string strBase64 = Convert.ToBase64String(bytes);
-                    string cc = "\"";
-                    string imgdata = "<img style='left: 100px;height: 280px; width: 210px; right: 584px;border-radius: 13px;'src=" + cc + "data:Image/png;base64," + strBase64 + cc + ">";
-                    string Desc = "<a onclick='somefunction(this);' runat ='server' style ='height: 261px; width: 210px;cursor:pointer;'name='" + movie_data_info.MovieName + "'>" + imgdata + "<a><a><img style='width:17px;height:17px;padding-top:17px;' src='/images/The-heart.png'></a>  " + movie_data_info.Rating + "%" + " &nbsp&nbsp&nbsp " + movie_data_info.MovieName + "";
-                    createDiv.InnerHtml = Desc;
-                    createDiv.Controls.Add(heart);
-                    PlaceHolder1.Controls.Add(createDiv);
-                }
+                Image movieImage = (Image)e.Item.FindControl("MovieImage");
+                Literal ratingLiteral = (Literal)e.Item.FindControl("RatingLiteral");
+                Literal movieNameLiteral = (Literal)e.Item.FindControl("MovieNameLiteral");
+
+                HomePageDataInfo movieData = (HomePageDataInfo)e.Item.DataItem;
+
+                movieImage.ImageUrl = "data:image/png;base64," + movieData.ImageData;
+                ratingLiteral.Text = movieData.Rating + "/5";
+                movieNameLiteral.Text = movieData.MovieName;
             }
-        }
+        }     
         protected void signinbtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("logorsigup.aspx");

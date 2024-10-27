@@ -1,17 +1,21 @@
-﻿namespace Movie_Ticket_Management.DataAccess
+﻿using System;
+
+namespace Movie_Ticket_Management.DataAccess
 {
     public class HomePageDataInfo
     {
-        public int MovieID { get; set; }
+        public Int64 MovieID { get; set; }
         public string MovieName { get; set; }
         public string HeroName { get; set; }
         public string HeroinName { get; set; }
-        public string Director { get; set; }
-        public string Story { get; set; }
+        public string DirectorName { get; set; }
+        public string StoryWriterName { get; set; }
         public string Genre { get; set; }
-        public string Cost { get; set; }
+        public decimal Cost { get; set; }
         public decimal Rating { get; set; }
         public decimal Duration { get; set; }
+        public int ImageSize { get; set; }
+        public string ImageData { get; set; }
     }
     public struct HomePageDataInfoFields
     {
@@ -25,5 +29,7 @@
         public const int Cost = 7;
         public const int Rating = 8;
         public const int Duration = 9;
+        public const int ImageSize = 10;
+        public const int ImageData = 11;
     }
 }
