@@ -10,13 +10,14 @@ using System.Text;
 using System.Web.UI.HtmlControls;
 using System.Globalization;
 using System.Collections;
+using System.Configuration;
 
 namespace Movie_Ticket_Management
 {
     public partial class WebForm4 : System.Web.UI.Page
     {
         ArrayList al = new ArrayList();
-        SqlConnection con = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             SqlCommand gettime = new SqlCommand("select time from Seatstatus where name='kfg' AND date='02/02/2019'", con);

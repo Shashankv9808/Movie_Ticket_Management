@@ -6,12 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Movie_Ticket_Management
 {
     public partial class logorsingup : System.Web.UI.Page
     {
-        SqlConnection conn = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
 
         protected void Page_Load(object sender, EventArgs e)
         {

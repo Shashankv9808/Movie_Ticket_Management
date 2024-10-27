@@ -6,13 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace Movie_Ticket_Management
 {
     public partial class movielist : System.Web.UI.Page
     {
         public string a, rating;
-        SqlConnection conn = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,7 +40,7 @@ namespace Movie_Ticket_Management
                 System.Web.UI.HtmlControls.HtmlGenericControl createDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
                 createDiv.ID = "createDiv" + i;
                 createDiv.Attributes.Add("class", "c1");
-                string cs = System.Configuration.ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+                string cs = System.Configuration.ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(cs))
                 {
                     SqlCommand cmd = new SqlCommand("spGetImageById", con);

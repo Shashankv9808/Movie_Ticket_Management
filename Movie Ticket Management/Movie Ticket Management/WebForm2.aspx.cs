@@ -14,7 +14,7 @@ namespace Movie_Ticket_Management
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
                 SqlCommand cmd = new SqlCommand("spGetImageById", con);

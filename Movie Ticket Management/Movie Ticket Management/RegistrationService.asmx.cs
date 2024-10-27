@@ -23,7 +23,7 @@ namespace Movie_Ticket_Management
         {
             bool userNameInUse = false;
 
-            string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
                 SqlCommand cmd = new SqlCommand("spUserNameExistss", con);

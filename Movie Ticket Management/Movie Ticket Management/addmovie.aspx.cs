@@ -16,7 +16,7 @@ namespace Movie_Ticket_Management
     public partial class addmovie : System.Web.UI.Page
     {
         public char[] letters = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',',','.',';',':','}','{','-','=','!','@','#','$','%','^','&','*','(',')','_','+','*','|' };
-        SqlConnection conn = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -79,7 +79,7 @@ namespace Movie_Ticket_Management
                         Stream stream = postedFile.InputStream;
                         BinaryReader binaryReader = new BinaryReader(stream);
                         Byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
-                        string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+                        string cs = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
                         using (SqlConnection con = new SqlConnection(cs))
                         {
                             SqlCommand cmd = new SqlCommand("spUploadImage", con);

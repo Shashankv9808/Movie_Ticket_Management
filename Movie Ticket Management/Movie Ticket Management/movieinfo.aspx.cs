@@ -24,7 +24,7 @@ namespace Movie_Ticket_Management
         public int totalamts;
         public string myVar;
         public int numofseats;
-        SqlConnection con = new SqlConnection("Server=SHASHANK\\SQLEXPRESS;Database=movie;Integrated Security=SSPI");
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
            
@@ -1296,7 +1296,7 @@ namespace Movie_Ticket_Management
         private void imagedisplay()
         {
             string id=null;
-            string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
                 SqlCommand ids = new SqlCommand("select * from tblImages where Name='" + Session["moviename"].ToString() + "'", con);
