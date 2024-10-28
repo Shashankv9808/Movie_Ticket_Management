@@ -188,7 +188,7 @@ function closeNav() {
         <div>
 <div class="modal" id="modal">
     <div class="modal__content">
-      <a href="homepage.aspx" class="modal__close">&times;</a>
+      <a href="HomePage.aspx" class="modal__close">&times;</a>
       <h2 class="modal__heading" style="padding-left:20%;padding-bottom:10px;color:forestgreen;">Successfully Booked</h2>
         <div class="dam" style="font-family:'Calisto MT';font-size:x-large;">Book Number: 
             <asp:Label ID="booknum" runat="server" Text="Label"></asp:Label></div>

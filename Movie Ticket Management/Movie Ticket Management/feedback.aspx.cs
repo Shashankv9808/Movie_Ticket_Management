@@ -77,7 +77,7 @@ namespace Movie_Ticket_Management
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
 
         protected void LinkButton1_Click(object sender, EventArgs e)
@@ -109,7 +109,7 @@ namespace Movie_Ticket_Management
                     cmd.ExecuteNonQuery();
                     conn.Close();
                     Response.Write("<script>alert('FeedBack Successfully, Thank You for your FeedBack.')</script>");
-                    Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                    Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
                 }
                 else
                 {

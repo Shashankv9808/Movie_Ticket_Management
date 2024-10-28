@@ -17,7 +17,7 @@ namespace Movie_Ticket_Management
         {
 
             Session["pay"] = "no";
-            Session["page"] = "homepage.aspx";
+            Session["page"] = "HomePage.aspx";
             if(!IsPostBack)
             {
                 List<HomePageDataInfo> movieList = HomePageDataAccess.GetMovieDataList();
@@ -71,24 +71,24 @@ namespace Movie_Ticket_Management
                     else
                     {
                         Response.Write("<script>alert('Movie does not exist in database,please search for another movie')</script>");
-                        Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                        Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
                     }
                 }
             }
             else
             {
                 Response.Write("<script>alert('Enter some text before search!')</script>");
-                Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
             }
         }
         protected void btnBeforeOk_ServerClick(object sender, EventArgs e)
         {
             Session["user"] = null;
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
     }
 }

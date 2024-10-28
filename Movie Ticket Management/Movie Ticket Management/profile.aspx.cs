@@ -74,11 +74,11 @@ namespace Movie_Ticket_Management
         protected void btnBeforeOk_ServerClick(object sender, EventArgs e)
         {
             Session["user"] = null;
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
 
         protected void check_btn_Click(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace Movie_Ticket_Management
             del.ExecuteNonQuery();
             Session["user"] = null;
             Response.Write("<script>alert('Your account has been deleted successfully')</script>");
-            Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+            Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
             conn.Close();
             
         }

@@ -110,7 +110,7 @@ namespace Movie_Ticket_Management
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
     
     }

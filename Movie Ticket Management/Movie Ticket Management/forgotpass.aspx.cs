@@ -66,7 +66,7 @@ namespace Movie_Ticket_Management
         protected void logout_Click(object sender, ImageClickEventArgs e)
         {
             Session["user"]= "";
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
     }
 }

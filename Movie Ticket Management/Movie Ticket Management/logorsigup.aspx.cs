@@ -19,7 +19,7 @@ namespace Movie_Ticket_Management
             if (Session["user"] != null)
             {
                 Response.Write("<script>alert('You have logged in already')</script");
-                Response.AddHeader("REFRESH", "0.1;URL=homepage.aspx");
+                Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
             }
 
         }
@@ -31,7 +31,7 @@ namespace Movie_Ticket_Management
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
 
         protected void contactbtns_Click(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace Movie_Ticket_Management
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
     }
 }

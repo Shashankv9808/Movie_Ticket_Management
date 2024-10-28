@@ -38,7 +38,7 @@ namespace Movie_Ticket_Management
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
 
         protected void signinbtn_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace Movie_Ticket_Management
         }
         protected void ImageButton1_Click2(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("homepage.aspx");
+            Response.Redirect("HomePage.aspx");
         }
 
         protected void btnBeforeOk_ServerClick(object sender, EventArgs e)
