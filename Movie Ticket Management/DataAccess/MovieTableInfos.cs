@@ -2,7 +2,7 @@
 
 namespace Movie_Ticket_Management.DataAccess
 {
-    public class HomePageDataInfo
+    public class MovieTableInfos
     {
         public Int64 MovieID { get; set; }
         public string MovieName { get; set; }

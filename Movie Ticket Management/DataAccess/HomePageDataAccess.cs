@@ -8,9 +8,9 @@ namespace Movie_Ticket_Management.DataAccess
     internal static class HomePageDataAccess
     {
         private readonly static string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
-        internal static List<HomePageDataInfo> GetMovieDataList()
+        internal static List<MovieTableInfos> GetMovieDataList()
         {
-            List<HomePageDataInfo> all_movie_list = new List<HomePageDataInfo>();
+            List<MovieTableInfos> all_movie_list = new List<MovieTableInfos>();
             try
             {
                 using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
@@ -22,7 +22,7 @@ namespace Movie_Ticket_Management.DataAccess
                         {
                             while (rd.Read())
                             {
-                                HomePageDataInfo info = new HomePageDataInfo()
+                                MovieTableInfos info = new MovieTableInfos()
                                 {
                                     MovieID = (int)rd.GetInt64(HomePageDataInfoFields.MovieID),
                                     MovieName = rd.GetString(HomePageDataInfoFields.MovieName),

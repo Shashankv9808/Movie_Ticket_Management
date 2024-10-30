@@ -50,6 +50,11 @@ CREATE TABLE [dbo].[MovieCast]
 );
 
 
+------------------------------------------------------
+--Onboarding Script
+------------------------------------------------------
+
+INSERT INTO UserAccount (UserName,EncryptedPassword,FirstName,LastName,ContactNumber,EmailAddress,IsUserAdmin,ImageData,ImageSize) VALUES('admin','')
 
 
 ------------------------------------------------------
@@ -89,3 +94,4 @@ BEGIN
 END
 
 GO
+CREATE PROCEDURE [dbo].[sp]

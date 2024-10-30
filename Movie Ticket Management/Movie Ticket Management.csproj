@@ -238,7 +238,8 @@
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\HomePageDataAccess.cs" />
-    <Compile Include="DataAccess\HomePageDataInfo.cs" />
+    <Compile Include="DataAccess\MovieTableInfos.cs" />
+    <Compile Include="DataAccess\UserAccountInfos.cs" />
     <Compile Include="feedback.aspx.cs">
       <DependentUpon>feedback.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

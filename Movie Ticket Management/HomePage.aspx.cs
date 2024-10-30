@@ -1,18 +1,16 @@
-﻿using AjaxControlToolkit;
-using Movie_Ticket_Management.DataAccess;
+﻿using Movie_Ticket_Management.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
+using System.Linq;
+using System.Resources;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace Movie_Ticket_Management
 {
     public partial class WebForm1 : Page
     {
+        List<MovieTableInfos> _AllMovieDetailsList = new List<MovieTableInfos>();
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -20,9 +18,7 @@ namespace Movie_Ticket_Management
             Session["page"] = "HomePage.aspx";
             if(!IsPostBack)
             {
-                List<HomePageDataInfo> movieList = HomePageDataAccess.GetMovieDataList();
-                MovieRepeater.DataSource = movieList;
-                MovieRepeater.DataBind();
+                _AllMovieDetailsList = HomePageDataAccess.GetMovieDataList();
             }
             else if (Session["user"] != null)
             {
@@ -32,6 +28,8 @@ namespace Movie_Ticket_Management
                 btnBeforeOk.Visible = true;
                 PlaceHolder2.Visible = true;
             }
+            MovieRepeater.DataSource = _AllMovieDetailsList;
+            MovieRepeater.DataBind();
         }
         protected void MovieRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -42,7 +40,7 @@ namespace Movie_Ticket_Management
                 Literal ratingLiteral = (Literal)e.Item.FindControl("RatingLiteral");
                 Literal movieNameLiteral = (Literal)e.Item.FindControl("MovieNameLiteral");
 
-                HomePageDataInfo movieData = (HomePageDataInfo)e.Item.DataItem;
+                MovieTableInfos movieData = (MovieTableInfos)e.Item.DataItem;
 
                 movieImage.ImageUrl = "data:image/png;base64," + movieData.ImageData;
                 ratingLiteral.Text = movieData.Rating + "/5";
@@ -58,22 +56,8 @@ namespace Movie_Ticket_Management
         {
             if (searchtxt.Text != null)
             {
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString))
-                {
-                    SqlCommand command = new SqlCommand("select count(*) from movielist where Name='" + searchtxt.Text + "'", connection);
-                    connection.Open();
-                    int check = Convert.ToInt32(command.ExecuteScalar().ToString());
-                    if (check == 1)
-                    {
-                        Session["moviename"] = searchtxt.Text;
-                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
-                    }
-                    else
-                    {
-                        Response.Write("<script>alert('Movie does not exist in database,please search for another movie')</script>");
-                        Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
-                    }
-                }
+                MovieRepeater.DataSource = _AllMovieDetailsList.Where(movieinfo => movieinfo.MovieName.ToLower().Contains(searchtxt.Text.Trim().ToLower())).ToList();
+                MovieRepeater.DataBind();
             }
             else
             {

@@ -10,7 +10,7 @@ using System.Configuration;
 
 namespace Movie_Ticket_Management
 {
-    public partial class logorsingup : System.Web.UI.Page
+    public partial class logorsingup : Page
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
 

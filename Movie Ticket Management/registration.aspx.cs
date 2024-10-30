@@ -68,7 +68,7 @@ namespace Movie_Ticket_Management
         {
             //code implement
             var regexItem = new Regex("@|!#$%&/()=?»«@£§€{}.-;'<>_,[1-9]");
-            if (System.Text.RegularExpressions.Regex.IsMatch(username.Text, "^[a-zA-Z0-9\x20]+$") && System.Text.RegularExpressions.Regex.IsMatch(fnametxtbox.Text, "^[a-zA-Z\x20]+$") && System.Text.RegularExpressions.Regex.IsMatch(lnametxtbox.Text, "^[a-zA-Z\x20]+$"))
+            if (Regex.IsMatch(username.Text, "^[a-zA-Z0-9\x20]+$") && Regex.IsMatch(fnametxtbox.Text, "^[a-zA-Z\x20]+$") && Regex.IsMatch(lnametxtbox.Text, "^[a-zA-Z\x20]+$"))
             {
                 string usercheck = "select count(*) from register where Username='" + username.Text + "'";
                 SqlCommand usercmd = new SqlCommand(usercheck, conn);
