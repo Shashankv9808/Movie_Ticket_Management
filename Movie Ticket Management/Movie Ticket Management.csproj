@@ -139,7 +139,7 @@
     <Content Include="images\logan.jpg" />
     <Content Include="images\logo.jpg" />
     <Content Include="index.js" />
-    <Content Include="logorsigup.aspx" />
+    <Content Include="LoginPage.aspx" />
     <Content Include="images\LOL-GIF-Image-for-Whatsapp-and-Facebook-32.gif" />
     <Content Include="movieinfo.aspx" />
     <Content Include="movielist.aspx" />
@@ -148,7 +148,7 @@
     <Content Include="images\Phone-icon.png" />
     <Content Include="moviereop.aspx" />
     <Content Include="profile.aspx" />
-    <Content Include="registration.aspx" />
+    <Content Include="Registration.aspx" />
     <Content Include="RegistrationService.asmx" />
     <Content Include="images\Search.png" />
     <Content Include="images\Spider-Man.jpg" />
@@ -238,7 +238,9 @@
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\HomePageDataAccess.cs" />
+    <Compile Include="DataAccess\LoginDataAccess.cs" />
     <Compile Include="DataAccess\MovieTableInfos.cs" />
+    <Compile Include="DataAccess\RegisterDataAccess.cs" />
     <Compile Include="DataAccess\UserAccountInfos.cs" />
     <Compile Include="feedback.aspx.cs">
       <DependentUpon>feedback.aspx</DependentUpon>
@@ -257,12 +259,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="logorsigup.aspx.cs">
-      <DependentUpon>logorsigup.aspx</DependentUpon>
+    <Compile Include="LoginPage.aspx.cs">
+      <DependentUpon>LoginPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="logorsigup.aspx.designer.cs">
-      <DependentUpon>logorsigup.aspx</DependentUpon>
+    <Compile Include="LoginPage.aspx.designer.cs">
+      <DependentUpon>LoginPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="movieinfo.aspx.cs">
       <DependentUpon>movieinfo.aspx</DependentUpon>
@@ -300,12 +302,12 @@
     <Compile Include="HomePage.aspx.designer.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="registration.aspx.cs">
-      <DependentUpon>registration.aspx</DependentUpon>
+    <Compile Include="Registration.aspx.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="registration.aspx.designer.cs">
-      <DependentUpon>registration.aspx</DependentUpon>
+    <Compile Include="Registration.aspx.designer.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registration.cs" />
     <Compile Include="RegistrationService.asmx.cs">

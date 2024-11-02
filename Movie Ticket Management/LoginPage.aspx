@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="logorsigup.aspx.cs" Inherits="Movie_Ticket_Management.logorsingup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LoginPage.aspx.cs" Inherits="Movie_Ticket_Management.logorsingup" %>
 
 <!DOCTYPE html>
 
@@ -147,7 +147,6 @@ function closeNav() {
          </div>
         <br />
         <div>
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="69px" ImageUrl="~/images/logo.jpg" Width="259px" OnClick="ImageButton1_Click" />
         <asp:Label ID="loginlabel" runat="server" style="top: 157px; left: 582px; position: absolute; height: 27px; width: 112px" Text="Log in" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" ForeColor="Black"></asp:Label>
         <asp:TextBox ID="usernametxtbox" placeholder="Username" runat="server" style=" top: 232px; left: 514px; position: absolute; height: 31px; width: 242px; margin-top: 2px;" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" ></asp:TextBox>
         <asp:TextBox ID="passtxtbox" placeholder="Password" runat="server" style="top: 312px; left: 512px; position: absolute; height: 31px; width: 242px" MaxLength="23" TextMode="Password" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" alt="">PassWord</asp:TextBox>
@@ -160,7 +159,7 @@ function closeNav() {
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="usernametxtbox" ErrorMessage="* Enter Email Id" style="top: 242px; left: 768px; position: absolute; height: 18px; width: 162px" ValidationGroup="a"></asp:RequiredFieldValidator>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="passtxtbox" ErrorMessage="* Enter Password" style="top: 321px; left: 768px; position: absolute; height: 18px; width: 162px" ValidationGroup="a"></asp:RequiredFieldValidator>
         <asp:Label ID="Label1" runat="server" ForeColor="Black" style="top: 438px; left: 643px; position: absolute; height: 18px; width: 39px" Text="or"></asp:Label>
-        <asp:HyperLink ID="HyperLink1" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="Blue" style="top: 439px; left: 701px; position: absolute; height: 18px; width: 70px" NavigateUrl="~/registration.aspx">Sign Up</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink1" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="Blue" style="top: 439px; left: 701px; position: absolute; height: 18px; width: 70px" NavigateUrl="~/Registration.aspx">Sign Up</asp:HyperLink>
         <asp:Image ID="Image1" runat="server" ImageUrl="~/images/i-love-my-online-friends_2541.gif" style="top: 94px; left: 0px; position: absolute; height: 365px" Width="472px" />
         </div>       
     </form>

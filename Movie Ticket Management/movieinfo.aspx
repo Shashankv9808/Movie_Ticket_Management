@@ -700,7 +700,7 @@ function closeNav() {
         
         <asp:Button ID="log" runat="server" Text="Login" CssClass="btn" OnClick="log_Click"/>
         
-        <asp:HyperLink ID="HyperLink1" runat="server" BorderStyle="Dashed" NavigateUrl="~/registration.aspx">Signup</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink1" runat="server" BorderStyle="Dashed" NavigateUrl="~/Registration.aspx">Signup</asp:HyperLink>
         <!--Login popup-->
         <!-- payment pop up-->
     </div>

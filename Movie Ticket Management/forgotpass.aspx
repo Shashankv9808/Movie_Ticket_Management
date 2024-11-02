@@ -38,7 +38,7 @@ height:100%;background-color:#F2F2F2;
 <body>
     <form id="form1" runat="server">
         <div id="header"><!--header -->
-           <asp:Button ID="logout" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Courier New" ForeColor="White" OnClick="logout_Click" style="top: 57px; left: 1280px; position: absolute; height: 21px; width: 71px;background-color:transparent;" Text="Log Out" Visible="False" BorderColor="White" />
+           <asp:Button ID="logout" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Courier New" ForeColor="White" style="top: 57px; left: 1280px; position: absolute; height: 21px; width: 71px;background-color:transparent;" Text="Log Out" Visible="False" BorderColor="White" />
         <asp:Label ID="welcomeuser" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Harlow Solid Italic" Font-Size="X-Large" ForeColor="#00CC00" style="top: 4px; left: 1256px; position: absolute; height: 23px; width: 108px" Visible="False"></asp:Label>
         <asp:Label ID="usertxt" runat="server" Font-Names="Algerian" Font-Size="Larger" Font-Underline="True" ForeColor="#00CC00" style="top: 25px; left: 1254px; position: absolute; height: 20px; width: 36px" Visible="False"></asp:Label>
         <asp:Button ID="signinbtn" CssClass="button"  runat="server" style="top: 17px; left: 1271px; position: absolute; height: 28px; width: 75px; float: right; margin-top: 0px;" Text="Sign in" BackColor="#0078FF" BorderColor="#0078FF" ForeColor="White" OnClick="signinbtn_Click" />
@@ -46,7 +46,7 @@ height:100%;background-color:#F2F2F2;
             <asp:ImageButton ID="searchimgbtn" CssClass="search" runat="server" ImageUrl="~/images/Search.png" style="top: 9px; left: 901px; position: absolute; height: 41px; width: 45px" OnClick="searchimgbtn_Click" />
             <asp:TextBox ID="searchtxt" CssClass="search" runat="server" placeholder="Search Movies...." style="top: 10px; left: 290px; position: absolute; height: 34px; width: 603px"></asp:TextBox>
         <asp:Button ID="contactbtn" CssClass="trans" runat="server" style="top: 15px; left: 1126px; position: absolute; height: 34px; width: 126px; right: 193px;" Text="Contact Us" OnClick="contactbtn_Click" />
-        <asp:ImageButton ID="logo" runat="server" Height="69px" ImageUrl="~/images/logo.jpg" Width="259px" OnClick="logo_Click" />
+        <asp:ImageButton ID="logo" runat="server" Height="69px" ImageUrl="~/images/logo.jpg" Width="259px"/>
         <marquee>You will get 10% offer from paying in debit card and 10% cash back in paytm.Offer valid for today only book your tickets now!!!!</marquee>
         </div>
     </form>

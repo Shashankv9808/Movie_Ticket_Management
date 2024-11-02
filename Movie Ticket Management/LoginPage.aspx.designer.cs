@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Movie_Ticket_Management {
-    
-    
-    public partial class logorsingup {
-        
+namespace Movie_Ticket_Management
+{
+
+
+    public partial class logorsingup
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// mySidenav control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mySidenav;
-        
+
         /// <summary>
         /// PlaceHolder2 control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder2;
-        
+
         /// <summary>
         /// btnBeforeOk control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnBeforeOk;
-        
+
         /// <summary>
         /// logoimgbtn control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton logoimgbtn;
-        
+
         /// <summary>
         /// searchimgbtn control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton searchimgbtn;
-        
+
         /// <summary>
         /// searchtxt control.
         /// </summary>
@@ -74,16 +76,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox searchtxt;
-        
-        /// <summary>
-        /// ImageButton1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
-        
+
         /// <summary>
         /// loginlabel control.
         /// </summary>
@@ -92,7 +85,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label loginlabel;
-        
+
         /// <summary>
         /// usernametxtbox control.
         /// </summary>
@@ -101,7 +94,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox usernametxtbox;
-        
+
         /// <summary>
         /// passtxtbox control.
         /// </summary>
@@ -110,7 +103,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox passtxtbox;
-        
+
         /// <summary>
         /// loginbtn control.
         /// </summary>
@@ -119,7 +112,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button loginbtn;
-        
+
         /// <summary>
         /// forgotpw control.
         /// </summary>
@@ -128,7 +121,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink forgotpw;
-        
+
         /// <summary>
         /// RequiredFieldValidator1 control.
         /// </summary>
@@ -137,7 +130,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-        
+
         /// <summary>
         /// RequiredFieldValidator2 control.
         /// </summary>
@@ -146,7 +139,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
-        
+
         /// <summary>
         /// Label1 control.
         /// </summary>
@@ -155,7 +148,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-        
+
         /// <summary>
         /// HyperLink1 control.
         /// </summary>
@@ -164,7 +157,7 @@ namespace Movie_Ticket_Management {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
-        
+
         /// <summary>
         /// Image1 control.
         /// </summary>

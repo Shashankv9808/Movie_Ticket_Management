@@ -10,10 +10,10 @@ namespace Movie_Ticket_Management.DataAccess
         public string EncryptedPassword { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int ContactNumber { get; set; }
+        public long ContactNumber { get; set; }
         public string EmailAddress { get; set; }
         public bool IsUserAdmin { get; set; }
-        public int ImageSize { get; set; }
+        public int? ImageSize { get; set; }
         public string ImageData { get; set; }
         public static String Encrypt(String Password)
         {
@@ -21,7 +21,7 @@ namespace Movie_Ticket_Management.DataAccess
             {
                 throw new ArgumentNullException();
             }
-            HashAlgorithm hash_algorithm = new SHA1CryptoServiceProvider();
+            HashAlgorithm hash_algorithm = new SHA256CryptoServiceProvider();
             // Convert the original string to array of Bytes
             byte[] password_as_bytes = System.Text.Encoding.UTF8.GetBytes(Password);
             // Compute the Hash, returns an array of Bytes
@@ -32,5 +32,18 @@ namespace Movie_Ticket_Management.DataAccess
             return Convert.ToBase64String(hashed_password_as_bytes);
         }
     }
-    
+    public struct UserAccountDataInfoFields
+    {
+        public const int UserID = 0;
+        public const int UserName = 1;
+        public const int EncryptedPassword = 2;
+        public const int FirstName = 3;
+        public const int LastName = 4;
+        public const int ContactNumber = 5;
+        public const int EmailAddress = 6;
+        public const int IsUserAdmin = 7;
+        public const int ImageSize = 8;
+        public const int ImageData = 9;
+    }
+
 }

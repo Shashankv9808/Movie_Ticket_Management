@@ -36,13 +36,13 @@ namespace Movie_Ticket_Management
             else
             {
                 Response.Write("<script>alert('You haven't logged In,please log in.This will redirect to log in page.</script>");
-                Response.Redirect("logorsigup.aspx");
+                Response.Redirect("LoginPage.aspx");
             }
            
         }
         protected void signinbtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logorsigup.aspx");
+            Response.Redirect("LoginPage.aspx");
         }
 
         protected void searchimgbtn_Click(object sender, ImageClickEventArgs e)

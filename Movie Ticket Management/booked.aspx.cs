@@ -47,7 +47,7 @@ namespace Movie_Ticket_Management
 
         protected void signinbtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logorsigup.aspx");
+            Response.Redirect("LoginPage.aspx");
         }
         protected void ImageButton1_Click2(object sender, ImageClickEventArgs e)
         {

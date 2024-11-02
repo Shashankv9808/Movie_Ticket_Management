@@ -36,12 +36,12 @@ namespace Movie_Ticket_Management
             }
             else
             {
-                Response.Redirect("logorsigup.aspx");
+                Response.Redirect("LoginPage.aspx");
             }
         }
         protected void signinbtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logorsigup.aspx");
+            Response.Redirect("LoginPage.aspx");
         }
 
         protected void searchimgbtn_Click(object sender, ImageClickEventArgs e)

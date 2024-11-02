@@ -1,8 +1,6 @@
 ﻿using Movie_Ticket_Management.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -49,21 +47,12 @@ namespace Movie_Ticket_Management
         }     
         protected void signinbtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logorsigup.aspx");
+            Response.Redirect("LoginPage.aspx");
         }
 
         protected void searchimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            if (searchtxt.Text != null)
-            {
-                MovieRepeater.DataSource = _AllMovieDetailsList.Where(movieinfo => movieinfo.MovieName.ToLower().Contains(searchtxt.Text.Trim().ToLower())).ToList();
-                MovieRepeater.DataBind();
-            }
-            else
-            {
-                Response.Write("<script>alert('Enter some text before search!')</script>");
-                Response.AddHeader("REFRESH", "0.1;URL=HomePage.aspx");
-            }
+            
         }
         protected void btnBeforeOk_ServerClick(object sender, EventArgs e)
         {

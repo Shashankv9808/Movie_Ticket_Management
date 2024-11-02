@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="registration.aspx.cs" Inherits="Movie_Ticket_Management.registration" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="Movie_Ticket_Management.registration" %>
 
 <!DOCTYPE html>
 
@@ -210,25 +210,25 @@ function closeNav() {
         <asp:Label ID="welcomeuser" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Harlow Solid Italic" Font-Size="X-Large" ForeColor="#00CC00" Visible="False" CssClass="auto-style4"></asp:Label>
         <asp:Button ID="signinbtn" CssClass="auto-style5"  runat="server" style="margin-top: 0px;" Text="Sign in " BackColor="#0078FF" BorderColor="#0078FF" ForeColor="White" OnClick="signinbtn_Click" />
         <asp:ImageButton ID="logoimgbtn" runat="server" Height="69px" Width="259px" ImageUrl="~/images/logo.jpg" OnClick="logoimgbtn_Click" />
-            <asp:ImageButton ID="searchimgbtn" CssClass="search" runat="server" ImageUrl="~/images/Search.png" style="top: 9px; left: 901px; position: absolute; height: 41px; width: 45px" OnClick="searchimgbtn_Click" />
-            <asp:TextBox ID="searchtxt" CssClass="search" runat="server" placeholder="Search Movies...." style="top: 10px; left: 290px; position: absolute; height: 34px; width: 603px"></asp:TextBox>
+        <asp:ImageButton ID="searchimgbtn" CssClass="search" runat="server" ImageUrl="~/images/Search.png" style="top: 9px; left: 901px; position: absolute; height: 41px; width: 45px" OnClick="searchimgbtn_Click" />
+        <asp:TextBox ID="searchtxt" CssClass="search" runat="server" placeholder="Search Movies...." style="top: 10px; left: 290px; position: absolute; height: 34px; width: 603px"></asp:TextBox>
         <marquee class="auto-style8">You will get 10% offer from paying in debit card and 10% cash back in paytm.Offer valid for today only book your tickets now!!!!</marquee>
-         </div>
-        <div>
-            <asp:Image ID="Image2" runat="server" ImageUrl="~/images/greatwork.gif" style="top: 225px; left: 997px; position: absolute; height: 281px; width: 328px" />
-       
-            <asp:Button ID="signupbtn" CssClass="search" runat="server" style="top: 600px; left: 567px; position: absolute; height: 36px; width: 266px; right: 283px;" Text="Sign Up" BackColor="#F4B401" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" ForeColor="White" OnClick="signupbtn_Click" />
-        <asp:TextBox ID="Emailtxtbox" placeholder="Email Id" runat="server" style="top: 310px; left: 567px; position: absolute; height: 31px; width: 260px; margin-top: 5px" Font-Names="Lucida Calligraphy" TextMode="Email"></asp:TextBox>
-        <asp:TextBox ID="Phonetxtbox" placeholder="Mobile Number" runat="server" onkeypress="return isNumberKey(event)" style="top: 370px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy" MaxLength="10"></asp:TextBox>
-        <asp:TextBox ID="fnametxtbox" placeholder="First Name" runat="server" style="top: 430px; left: 567px; position: absolute; height: 31px; width: 260px; margin-top: 0px;" Font-Names="Lucida Calligraphy" MaxLength="30"></asp:TextBox>
-        <asp:TextBox ID="lnametxtbox" placeholder="Last Name" runat="server" style="top: 490px; left: 567px; position: absolute; height: 31px; width: 260px; bottom: 156px" Font-Names="Lucida Calligraphy" MaxLength="20"></asp:TextBox>
-        <asp:TextBox ID="passtxt" placeholder="Password" runat="server" style="top: 550px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy" TextMode="Password"></asp:TextBox>
+
+    </div>
+    <div>
+        <asp:Image ID="Image2" runat="server" ImageUrl="~/images/greatwork.gif" style="top: 225px; left: 997px; position: absolute; height: 281px; width: 328px" />
+        <asp:Button ID="signupbtn" CssClass="search" runat="server" style="top: 600px; left: 567px; position: absolute; height: 36px; width: 266px; right: 283px;" Text="Sign Up" BackColor="#F4B401" Font-Bold="True" Font-Italic="True" ValidationGroup="Register" Font-Names="Lucida Calligraphy" ForeColor="White" OnClick="signupbtn_Click" />
+        <asp:TextBox ID="Emailtxtbox" placeholder="Email Id" runat="server" style="top: 310px; left: 567px; position: absolute; height: 31px; width: 260px; margin-top: 5px" Font-Names="Lucida Calligraphy" TextMode="Email" ValidationGroup="Register" TabIndex="2"></asp:TextBox>
+        <asp:TextBox ID="Phonetxtbox" placeholder="Mobile Number" runat="server" onkeypress="return isNumberKey(event)" style="top: 370px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy" MaxLength="10" ValidationGroup="Register" TabIndex="3"></asp:TextBox>
+        <asp:TextBox ID="fnametxtbox" placeholder="First Name" runat="server" style="top: 430px; left: 567px; position: absolute; height: 31px; width: 260px; margin-top: 0px;" Font-Names="Lucida Calligraphy" MaxLength="30" ValidationGroup="Register" TabIndex="4"></asp:TextBox>
+        <asp:TextBox ID="lnametxtbox" placeholder="Last Name" runat="server" style="top: 490px; left: 567px; position: absolute; height: 31px; width: 260px; bottom: 156px" Font-Names="Lucida Calligraphy" MaxLength="20" ValidationGroup="Register" TabIndex="5"></asp:TextBox>
+        <asp:TextBox ID="passtxt" placeholder="Password" runat="server" style="top: 550px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy" TextMode="Password" ValidationGroup="Register" TabIndex="6"></asp:TextBox>
         
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="Emailtxtbox" ErrorMessage="* Enter E-mail id" style="top: 323px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="Phonetxtbox" ErrorMessage="* Enter Phone Number" style="top: 375px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="fnametxtbox" ErrorMessage="* Enter First Name" style="top: 438px; left: 842px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="lnametxtbox" ErrorMessage="* Enter Last Name" style="top: 498px; left: 841px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="passtxt" ErrorMessage="* Enter Password" style="top: 559px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="Emailtxtbox" ErrorMessage="* Enter E-mail id" style="top: 323px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ValidationGroup="Register"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="Phonetxtbox" ErrorMessage="* Enter Phone Number" style="top: 375px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ValidationGroup="Register"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="fnametxtbox" ErrorMessage="* Enter First Name" style="top: 438px; left: 842px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ValidationGroup="Register"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="lnametxtbox" ErrorMessage="* Enter Last Name" style="top: 498px; left: 841px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ValidationGroup="Register"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="passtxt" ErrorMessage="* Enter Password" style="top: 559px; left: 840px; position: absolute; height: 18px; width: 162px" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ValidationGroup="Register"></asp:RequiredFieldValidator>
         
             
         
@@ -238,13 +238,13 @@ function closeNav() {
         <asp:Label ID="signuplabel" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" ForeColor="Black" style="top: 159px; left: 653px; position: absolute; height: 17px; width: 130px" Text="Sign Up"></asp:Label>
         <p>
             &nbsp;</p>
-        <asp:RequiredFieldValidator ID="usernamevalid" runat="server" ControlToValidate="username" ErrorMessage="* Enter UserName" Font-Italic="True" Font-Names="Arial" Font-Size="Small" style="top: 257px; left: 840px; position: absolute; height: 18px; width: 162px"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="usernamevalid" runat="server" ControlToValidate="username" ErrorMessage="* Enter UserName" Font-Italic="True" Font-Names="Arial" Font-Size="Small" style="top: 257px; left: 840px; position: absolute; height: 18px; width: 162px" ValidationGroup="Register"></asp:RequiredFieldValidator>
         <asp:Image ID="Image1" runat="server" ImageUrl="~/images/dthumb.gif" style="top: 177px; left: 39px; position: absolute; height: 431px; width: 466px" />
 
 
         <asp:Label ID="divOutput" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="Lucida Calligraphy" ForeColor="Black" style="top: 254px; left: 840px; position: absolute; height: 23px; width: 264px" Font-Size="Small"></asp:Label>
-        <asp:TextBox ID="username" placeholder="UserName" runat="server" style="top: 250px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy"></asp:TextBox>
-        <asp:RegularExpressionValidator ID="RegularExpressionofphone" runat="server" ValidationExpression="^(\([0-9]{3}\)|[0-9]{3}-)[0-9]{3}-[0-9]{4}|(\([0-9]{3}\)|[0-9]{3})[0-9]{3}[0-9]{4}$" ErrorMessage="* Enter 10 digits" style="top: 375px; left: 841px; position: absolute; height: 18px; width: 195px" ControlToValidate="Phonetxtbox"></asp:RegularExpressionValidator>    
+        <asp:TextBox ID="username" placeholder="UserName" runat="server" style="top: 250px; left: 567px; position: absolute; height: 31px; width: 260px" Font-Names="Lucida Calligraphy" ValidationGroup="Register" TabIndex="1"></asp:TextBox>
+        <asp:RegularExpressionValidator ID="RegularExpressionofphone" runat="server" ValidationExpression="^(\([0-9]{3}\)|[0-9]{3}-)[0-9]{3}-[0-9]{4}|(\([0-9]{3}\)|[0-9]{3})[0-9]{3}[0-9]{4}$" ErrorMessage="* Enter 10 digits" style="top: 375px; left: 841px; position: absolute; height: 18px; width: 195px" ControlToValidate="Phonetxtbox" ValidationGroup="Register"></asp:RegularExpressionValidator>    
     </form>
         
 </body>
