@@ -50,6 +50,7 @@ CREATE TABLE [dbo].[Movies]
 	ImageData VARBINARY(MAX) NOT NULL
 );
 
+
 CREATE TABLE [dbo].[MovieCast]
 (
 	PersonID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -58,6 +59,74 @@ CREATE TABLE [dbo].[MovieCast]
 	PersonHeight INT NOT NULL,
 	ImageSize INT,
 	ImageData VARBINARY(MAX)
+);
+
+
+CREATE TABLE [dbo].[Feedback]
+(
+	FeedbackID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	UserID BIGINT NOT NULL,
+	FeedbackText NVARCHAR(1020) NOT NULL,
+	ModifiedDateTime DateTime NOT NULL
+);
+
+
+CREATE TABLE [dbo].[MovieBookedInfo]
+(
+	MovieBookedInfo BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	UserID BIGINT NOT NULL,
+	MovieCost NUMERIC(10,3) NOT NULL,
+	Seats NVARCHAR(50) NOT NULL,
+	MovieID BIGINT NOT NULL
+);
+
+
+CREATE TABLE [dbo].[PaymentInfo]
+(
+	PaymentInfoId BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	UserID BIGINT NOT NULL,
+	CardNumber BIGINT NOT NULL,
+	CardOwner NVARCHAR(255) NOT NULL,
+	ExpMonth INT NOT NULL,
+	ExpYear INT NOT NULL,
+	CVV INT NOT NULL
+);
+
+
+CREATE TABLE [dbo].[MovieSeatStatus](
+	SeatStatusID BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	MovieID BIGINT NOT NULL,
+	s1  NCHAR(10) NOT NULL,
+	s2  NCHAR(10) NOT NULL,
+	s3  NCHAR(10) NOT NULL,
+	s4  NCHAR(10) NOT NULL,
+	s5  NCHAR(10) NOT NULL,
+	s6  NCHAR(10) NOT NULL,
+	s7  NCHAR(10) NOT NULL,
+	s8  NCHAR(10) NOT NULL,
+	s9  NCHAR(10) NOT NULL,
+	s10 NCHAR(10) NOT NULL,
+	s11 NCHAR(10) NOT NULL,
+	s12 NCHAR(10) NOT NULL,
+	s13 NCHAR(10) NOT NULL,
+	s14 NCHAR(10) NOT NULL,
+	s15 NCHAR(10) NOT NULL,
+	s16 NCHAR(10) NOT NULL,
+	s17 NCHAR(10) NOT NULL,
+	s18 NCHAR(10) NOT NULL,
+	s19 NCHAR(10) NOT NULL,
+	s20 NCHAR(10) NOT NULL,
+	s21 NCHAR(10) NOT NULL,
+	s22 NCHAR(10) NOT NULL,
+	s23 NCHAR(10) NOT NULL,
+	s24 NCHAR(10) NOT NULL,
+	s25 NCHAR(10) NOT NULL,
+	s26 NCHAR(10) NOT NULL,
+	s27 NCHAR(10) NOT NULL,
+	s28 NCHAR(10) NOT NULL,
+	s29 NCHAR(10) NOT NULL,
+	s30 NCHAR(10) NOT NULL,
+	MovieDateTime DateTime NOT NULL
 );
 
 
@@ -90,6 +159,14 @@ GO
 
 IF OBJECT_ID('dbo.spUserAccountAuthenication') IS NOT NULL
 	DROP PROCEDURE dbo.spUserAccountAuthenication
+GO
+
+IF OBJECT_ID('dbo.spGetMovieDetailsByID') IS NOT NULL
+	DROP PROCEDURE dbo.spGetMovieDetailsByID
+GO
+
+IF OBJECT_ID('dbo.spGetMovieSeatStatusDetails') IS NOT NULL
+	DROP PROCEDURE dbo.spGetMovieSeatStatusDetails
 GO
 ------------------------------------------------------
 --Stored Procedure Creation
@@ -162,7 +239,6 @@ AS
 GO
 
 
-
 CREATE PROCEDURE [dbo].[spGetAllMovieDetails]
 
 AS
@@ -203,7 +279,6 @@ END
 
 
 GO
-
 
 
 CREATE PROCEDURE [dbo].[spRegisterUserAccount]
@@ -285,7 +360,6 @@ END
 GO
 
 
-
 CREATE PROCEDURE [dbo].[spUserAccountAuthenication]
 (
 	@UserName NVARCHAR(MAX),
@@ -321,5 +395,74 @@ BEGIN
 		RETURN -1
     END CATCH
 END
+
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetMovieDetailsByID]
+(
+	@MovieID BIGINT
+)
+AS
+
+BEGIN
+	BEGIN TRY
+		SELECT
+			Movies.MovieID,
+			Movies.MovieName,
+			HeroCast.PersonName AS HeroName,
+			HeroinCast.PersonName AS HeroinName,
+			DirectorCast.PersonName AS DirectorName,
+			StoryWriterCast.PersonName AS StoryWriterName,
+			Genres.GenreName,
+			Movies.Cost,
+			Movies.Rating,
+			Movies.Duration,
+			Movies.ImageSize,
+			Movies.ImageData
+		 FROM 
+			Movies
+			INNER JOIN MovieCast HeroCast ON
+				Movies.HeroID = HeroCast.PersonID
+			INNER JOIN MovieCast HeroinCast ON
+				Movies.HeroinID = HeroinCast.PersonID
+			INNER JOIN MovieCast DirectorCast ON
+				Movies.DirectorID = DirectorCast.PersonID
+			INNER JOIN MovieCast StoryWriterCast ON
+				Movies.StoryWriterID = StoryWriterCast.PersonID
+			INNER JOIN Genres ON
+				Movies.GenreID = Genres.GenreID
+		WHERE Movies.MovieID = @MovieID;
+	END TRY
+    BEGIN CATCH
+		EXEC spErrorHandler
+		RETURN -1
+    END CATCH
+END
+
+
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetMovieSeatStatusDetails]
+(
+	@MovieID BIGINT
+)
+AS
+
+BEGIN
+	BEGIN TRY
+		SELECT
+			*
+		 FROM 
+			MovieSeatStatus
+		WHERE MovieSeatStatus.MovieID = @MovieID;
+	END TRY
+    BEGIN CATCH
+		EXEC spErrorHandler
+		RETURN -1
+    END CATCH
+END
+
 
 GO

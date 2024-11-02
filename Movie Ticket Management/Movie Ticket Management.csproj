@@ -141,7 +141,7 @@
     <Content Include="index.js" />
     <Content Include="LoginPage.aspx" />
     <Content Include="images\LOL-GIF-Image-for-Whatsapp-and-Facebook-32.gif" />
-    <Content Include="movieinfo.aspx" />
+    <Content Include="MovieDetails.aspx" />
     <Content Include="movielist.aspx" />
     <Content Include="images\movieslogo.jpg" />
     <Content Include="images\petta.jpg" />
@@ -237,8 +237,8 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\HomePageDataAccess.cs" />
     <Compile Include="DataAccess\LoginDataAccess.cs" />
+    <Compile Include="DataAccess\MovieDetailsDataAccess.cs" />
     <Compile Include="DataAccess\MovieTableInfos.cs" />
     <Compile Include="DataAccess\RegisterDataAccess.cs" />
     <Compile Include="DataAccess\UserAccountInfos.cs" />
@@ -266,12 +266,12 @@
     <Compile Include="LoginPage.aspx.designer.cs">
       <DependentUpon>LoginPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="movieinfo.aspx.cs">
-      <DependentUpon>movieinfo.aspx</DependentUpon>
+    <Compile Include="MovieDetails.aspx.cs">
+      <DependentUpon>MovieDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="movieinfo.aspx.designer.cs">
-      <DependentUpon>movieinfo.aspx</DependentUpon>
+    <Compile Include="MovieDetails.aspx.designer.cs">
+      <DependentUpon>MovieDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="movielist.aspx.cs">
       <DependentUpon>movielist.aspx</DependentUpon>

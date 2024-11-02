@@ -16,7 +16,7 @@ namespace Movie_Ticket_Management
             Session["page"] = "HomePage.aspx";
             if(!IsPostBack)
             {
-                _AllMovieDetailsList = HomePageDataAccess.GetMovieDataList();
+                _AllMovieDetailsList = MovieDetailsDataAccess.GetMovieDataList();
             }
             else if (Session["user"] != null)
             {
@@ -41,6 +41,7 @@ namespace Movie_Ticket_Management
                 MovieTableInfos movieData = (MovieTableInfos)e.Item.DataItem;
 
                 movieImage.ImageUrl = "data:image/png;base64," + movieData.ImageData;
+                movieImage.Attributes.Add("onclick", "window.location.href='MovieDetails.aspx?MovieDetails=" + MovieTableInfos.Encrypt(movieData.MovieID) + "'");
                 ratingLiteral.Text = movieData.Rating + "/5";
                 movieNameLiteral.Text = movieData.MovieName;
             }

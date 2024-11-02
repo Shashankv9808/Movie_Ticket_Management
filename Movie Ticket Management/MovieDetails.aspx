@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="movieinfo.aspx.cs" Inherits="Movie_Ticket_Management.movieinfo" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MovieDetails.aspx.cs" Inherits="Movie_Ticket_Management.MovieDetails" %>
 
 <!DOCTYPE html>
 
@@ -568,7 +568,7 @@ function closeNav() {
         <br />
         <br />
         <asp:Label ID="movienamelabel" runat="server" Font-Bold="True" Font-Italic="True" Font-Names="arabic" Font-Size="X-Large" ForeColor="White" CssClass="auto-style13"></asp:Label>
-        <asp:Button ID="generbtn" CssClass="auto-style14" runat="server" BorderColor="White" Font-Names="Bahnschrift Condensed" ForeColor="Green" style="background-color:transparent;" Enabled="False" Font-Bold="True" Font-Size="X-Large" />
+        <asp:Button ID="generbtn" CssClass="auto-style14" runat="server" BorderColor="White" Font-Names="Bahnschrift Condensed" ForeColor="Green" style="background-color:transparent; width:auto;" Enabled="False" Font-Bold="True" Font-Size="X-Large"  />
         <asp:Label ID="Languagelabel" runat="server" Font-Italic="True" Font-Names="Bahnschrift SemiLight Condensed" ForeColor="White" CssClass="auto-style15" Font-Bold="True" Font-Size="X-Large"></asp:Label>
         <asp:Image ID="movieimg" runat="server" CssClass="auto-style19" />
         <asp:Image ID="heart" runat="server" ImageUrl="~/images/The-heart.png" CssClass="auto-style17" />

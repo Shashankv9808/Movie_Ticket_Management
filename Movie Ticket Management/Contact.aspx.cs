@@ -42,7 +42,7 @@ namespace Movie_Ticket_Management
                 if (check == 1)
                 {
                     Session["moviename"] = searchtxt.Text;
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
+                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + searchtxt.Text + "';</script>");
                 }
                 else
                 {

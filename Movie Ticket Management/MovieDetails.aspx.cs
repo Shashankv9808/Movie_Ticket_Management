@@ -1,142 +1,147 @@
-﻿using System;
+﻿using Movie_Ticket_Management.DataAccess;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data.SqlClient;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Text.RegularExpressions;
 
 namespace Movie_Ticket_Management
 {
-    public partial class movieinfo : System.Web.UI.Page
+    public partial class MovieDetails : Page
     {
         public string moviedate;
-        string moviesss;
         public string movietime;
         static int[] bookedseat;
         static int[] tempbookseat;
         int ClicksCount;
-        public int costofmovie;
-        public int totalamts;
-        public string myVar;
+        public decimal costofmovie;
+        public decimal totalamts;
+        public string param_movie_id;
         public int numofseats;
+        private MovieTableInfos _MovieTableInfos;
+        private List<MovieSeatSatus> _SeatSatus;
+        Dictionary<int, Button> _SeatsButtonObjects;
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-            try
-            {
-                myVar = Request.QueryString["param"];//aquiring movie name from url
-                myVar = myVar.Replace("?#modal", "");
-                myVar = myVar.Replace("?#modals", "");
-            }
-            catch
-            {
-
-            }
-            Session["moviename"] = myVar.Replace("?","");
-            imagedisplay();
-            if(!IsPostBack)
-            {
-                if (Session["user"] != null)//checking login or not
-                {
-                    if (Session["pay"].ToString() == "no")
-                    {
-                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
-                    }
-                }
-                else
-                {
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
-                }
-            }
+            Initialize();
             if (!IsPostBack)
             {
+                if (Session["user"] != null)//check user
+                {
+                    welcomeuser.Visible = true;
+                    welcomeuser.Text = "Welcome " + Session["user"].ToString();
+                    signinbtn.Visible = false;
+                    btnBeforeOk.Visible = true;
+                    PlaceHolder2.Visible = true;
+                }
+                try
+                {
+                    param_movie_id = Request.QueryString["MovieDetails"];//aquiring movie name from url if it's from HomePage
+                    param_movie_id = param_movie_id.Replace("?#modal", "");
+                    param_movie_id = param_movie_id.Replace("?#modals", "");
+                    param_movie_id = param_movie_id.Replace("?", "");
+                }
+                catch (Exception ex)
+                {
+                    string exception = ex.Message;
+                }
+                _MovieTableInfos = MovieDetailsDataAccess.GetMovieDataByID(MovieTableInfos.Decrypt(param_movie_id));
+                Session["moviename"] = _MovieTableInfos.MovieName;
+                Session["MovieIDasParam"] = param_movie_id;
+                ViewState["MovieInfoData"] = _MovieTableInfos;
+
+
+                //if (Session["user"] != null)//checking login or not
+                //{
+                //    if (Session["pay"].ToString() == "no")
+                //    {
+                //        Response.Write("<script>window.location.href='MovieDetails.aspx?MovieDetails=" + Session["MovieIDasParam"].ToString() + "?#modals';</script>");//payment popup
+                //    }
+                //}
+                //else
+                //{
+                //    Response.Write("<script>window.location.href='MovieDetails.aspx?MovieDetails=" + Session["MovieIDasParam"].ToString() + "?#modal';</script>");//login popup
+                //}
+
                 if (ViewState["Clicks"] == null)
                 {
                     ViewState["Clicks"] = 0;
                 }
+
+                _SeatSatus = MovieDetailsDataAccess.GetSeatStatusDataByMovieID(MovieTableInfos.Decrypt(param_movie_id));
+                ViewState["SeatSatusInfoData"] = _SeatSatus;
             }
-            
-            if (!Page.IsPostBack)//assging to 0 to be free if first
+            else
             {
-                bookedseat = new int[31];
-                tempbookseat = new int[31];
-                tempbookseat[0] = 0;
-                tempbookseat[1] = 0;
-                tempbookseat[2] = 0;
-                tempbookseat[3] = 0;
-                tempbookseat[4] = 0;
-                tempbookseat[5] = 0;
-                tempbookseat[6] = 0;
-                tempbookseat[7] = 0;
-                tempbookseat[8] = 0;
-                tempbookseat[9] = 0;
-                tempbookseat[10] = 0;
-                tempbookseat[11] = 0;
-                tempbookseat[12] = 0;
-                tempbookseat[13] = 0;
-                tempbookseat[14] = 0;
-                tempbookseat[15] = 0;
-                tempbookseat[16] = 0;
-                tempbookseat[17] = 0;
-                tempbookseat[18] = 0;
-                tempbookseat[19] = 0;
-                tempbookseat[20] = 0;
-                tempbookseat[21] = 0;
-                tempbookseat[22] = 0;
-                tempbookseat[23] = 0;
-                tempbookseat[24] = 0;
-                tempbookseat[25] = 0;
-                tempbookseat[26] = 0;
-                tempbookseat[27] = 0;
-                tempbookseat[28] = 0;
-                tempbookseat[29] = 0;
-                tempbookseat[30] = 0;
-                DropDownList1.Enabled = true;
-                SqlCommand gettd = new SqlCommand("select date from Seatstatus where name='" + Session["moviename"].ToString() + "'", con);
-                con.Open();
-                SqlDataReader rda = gettd.ExecuteReader();
-                while (rda.Read())
-                {
-                    DropDownList1.Items.Add(rda[0].ToString());
-                }
-                con.Close();
+                _SeatSatus = (List<MovieSeatSatus>)ViewState["SeatSatusInfoData"];
+                _MovieTableInfos = (MovieTableInfos)ViewState["MovieInfoData"];
+                param_movie_id = (string)Session["MovieIDasParam"];
             }
-            if (Session["user"] != null)//check user
+
+            //Populate data into elements
+            foreach (MovieSeatSatus seatsinfos in _SeatSatus)
             {
-                welcomeuser.Visible = true;
-                welcomeuser.Text = "Welcome " + Session["user"].ToString();
-                signinbtn.Visible = false;
-                btnBeforeOk.Visible = true;
-                PlaceHolder2.Visible = true;
+                DropDownList1.Items.Add(seatsinfos.MovieDateTime.Date.ToString("dd/MM/yyyy"));
             }
-            if(Session["moviename"] !=null)
-            {
-                SqlCommand moviinfo = new SqlCommand("select * from movielist where Name='" + Session["moviename"].ToString() + "'",con);
-                con.Open();
-                SqlDataReader rd = moviinfo.ExecuteReader();
-                while (rd.Read())
-                {
-                    movienamelabel.Text = rd[1].ToString();
-                    herolabel.Text = rd[2].ToString();
-                    heroinlabel.Text = rd[3].ToString();
-                    directorlabel.Text = rd[4].ToString();
-                    storylabel.Text = rd[5].ToString();
-                    generbtn.Text = rd[6].ToString();
-                    costofmovie = Convert.ToInt32(rd[7]);
-                    costlab.Text = costofmovie.ToString();
-                    ratinglabel.Text = rd[8].ToString()+"%";
-                    durlab.Text = rd[9].ToString();
-                }
-                con.Close();
-            }
+            movienamelabel.Text = _MovieTableInfos.MovieName;
+            herolabel.Text = _MovieTableInfos.HeroName;
+            heroinlabel.Text = _MovieTableInfos.HeroinName;
+            directorlabel.Text = _MovieTableInfos.DirectorName;
+            storylabel.Text = _MovieTableInfos.StoryWriterName;
+            generbtn.Text = _MovieTableInfos.Genre;
+            costofmovie = _MovieTableInfos.Cost;
+            costlab.Text = costofmovie.ToString();
+            ratinglabel.Text = _MovieTableInfos.Rating + "/ 5";
+            durlab.Text = _MovieTableInfos.Duration.ToString();
+            movieimg.ImageUrl = "data:image/png;base64," + _MovieTableInfos.ImageData;
         }
-        private void alreadybooked()//display of booking seats
+        private void Initialize()
+        {
+            bookedseat = new int[31];
+            tempbookseat = Enumerable.Repeat(0, 31).ToArray();
+            DropDownList1.Enabled = true;
+            _SeatsButtonObjects = new Dictionary<int, Button>
+            {
+                { 1, s1 },
+                { 2, s2 },
+                { 3, s3 },
+                { 4, s4 },
+                { 5, s5 },
+                { 6, s6 },
+                { 7, s7 },
+                { 8, s8 },
+                { 9, s9 },
+                { 10, s10 },
+                { 11, s11 },
+                { 12, s12 },
+                { 13, s13 },
+                { 14, s14 },
+                { 15, s15 },
+                { 16, s16 },
+                { 17, s17 },
+                { 18, s18 },
+                { 19, s19 },
+                { 20, s20 },
+                { 21, s21 },
+                { 22, s22 },
+                { 23, s23 },
+                { 24, s24 },
+                { 25, s25 },
+                { 26, s26 },
+                { 27, s27 },
+                { 28, s28 },
+                { 29, s29 },
+                { 30, s30 },
+
+            };
+        }
+        //display of booking seats
+        private void Alreadybooked()
         {
             int i = 0, j = 0;
             if (Session["date"] == null && movietime == "")
@@ -153,12 +158,14 @@ namespace Movie_Ticket_Management
                     SqlCommand cmd = new SqlCommand(myquery, con);
                     con.Open();
                     SqlDataReader rd = cmd.ExecuteReader();
-                    while (rd.Read())
+
+                    foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == MovieTableInfos.Decrypt(param_movie_id) &&
+                                                                                    seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate &&
+                                                                                    seats.MovieDateTime.ToString("HH:mm") == movietime))
                     {
                         for (i = 2; i <= 31; i += 1, j += 1)
                         {
-                            String status = rd.GetString(i).Replace(" ", "");
-
+                            string status = rd.GetString(i).Replace(" ", "");
                             if (status == "B")
                             {
                                 bookedseat[j] = 1;
@@ -462,7 +469,6 @@ namespace Movie_Ticket_Management
         {
             Response.Redirect("LoginPage.aspx");
         }
-
         protected void searchimgbtn_Click(object sender, ImageClickEventArgs e)
         {
             if (searchtxt.Text != "")
@@ -475,7 +481,7 @@ namespace Movie_Ticket_Management
                 if (check == 1)
                 {
                     Session["moviename"] = searchtxt.Text;
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
+                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + searchtxt.Text + "';</script>");
                 }
                 else
                 {
@@ -492,16 +498,15 @@ namespace Movie_Ticket_Management
         protected void btnBeforeOk_ServerClick(object sender, EventArgs e)
         {
             Session["user"] = null;
-            Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "';</script>");
+            Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "';</script>");
         }
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)
         {
             Response.Redirect("HomePage.aspx");
         }
-
         protected void Button1_Click(object sender, EventArgs e)//book button
         {
-            int i,ccs=0;
+            int i, ccs = 0;
             for (i = 0; i <= 30; i++)
             {
                 if (tempbookseat[i] == 1)
@@ -527,12 +532,12 @@ namespace Movie_Ticket_Management
                                 con.Open();
                                 cmd.ExecuteNonQuery();
                                 con.Close();
-                               // Session["pay"] = "no";
+                                // Session["pay"] = "no";
                             }
                         }
                         Response.Write("<script>alert('" + totalamts + "')</script>");
                         string user = Session["user"].ToString();
-                        SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user+"','"+totaltxt.Text+ "','"+numofseats+"','"+ Session["moviename"].ToString()+"')",con);
+                        SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
                         con.Open();
                         hist.ExecuteNonQuery();
                         con.Close();
@@ -542,12 +547,12 @@ namespace Movie_Ticket_Management
                     else
                     {
 
-                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
+                        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
                     }
                 }
                 else
                 {
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
+                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
                 }
             }
             else
@@ -555,7 +560,147 @@ namespace Movie_Ticket_Management
                 Label14.Visible = true;
             }
         }
+        protected void log_Click(object sender, EventArgs e)
+        {
+            if (user.Text != "" && pass.Text != "")
+            {
 
+                int temp = 0;
+                String checkq = "select count(*) from register where Username='" + user.Text + "'";
+                con.Open();
+                SqlCommand cmd1 = new SqlCommand(checkq, con);
+                temp = Convert.ToInt32(cmd1.ExecuteScalar().ToString().Replace(" ", ""));
+                con.Close();
+                if (temp == 1)
+                {
+                    con.Open();
+                    String checkidpass = "select password from register where Username='" + user.Text + "'";
+                    SqlCommand cmdidpass = new SqlCommand(checkidpass, con);
+                    String userpass = cmdidpass.ExecuteScalar().ToString().Replace(" ", "");
+                    con.Close();
+                    if (userpass == pass.Text)
+                    {
+                        Session["user"] = user.Text;
+                        Response.AddHeader("REFRESH", "0.1;URL=movieinfo.aspx?param=" + Session["moviename"].ToString() + "");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Incorrect Username or Password')</script>");
+                        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
+                    }
+
+                }
+                else
+                {
+                    Response.Write("<script>alert('Incorrect Username or Password')</script>");
+                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
+                }
+            }
+            else
+            {
+                Response.Write("<script>alert('Please fill all fields')</script>");
+                Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
+            }
+        }
+        protected void paybtn_Click(object sender, EventArgs e)//payment
+        {
+            if (cardnumtxt.Text != "" && cvvtxt.Text != "" && expmonthtxt.Text != "" && expyear.Text != "" && Nametxt.Text != "")
+            {
+                int mon = DateTime.Now.Month;
+                int year = DateTime.Now.Year;
+                int cyear = Convert.ToInt32(expyear.Text);
+                int cmon = Convert.ToInt32(expmonthtxt.Text);
+                long cardno = Convert.ToInt64(cardnumtxt.Text);
+                int cvvno = Convert.ToInt32(cvvtxt.Text);
+                int t = 0;
+                var regexItem = new Regex("@|!#$%&/()=?»«@£§€{}.-;'<>_,[1-9]");
+                if (System.Text.RegularExpressions.Regex.IsMatch(Nametxt.Text, "^[a-zA-Z\x20]+$"))
+                {
+                    if (cmon > 0 && cyear > 0)
+                    {
+                        t = 1;
+                    }
+                    if (cyear >= year && t == 1 && cmon <= 12)
+                    {
+                        if (cardnumtxt.Text.Length == 12 && cardno >= 0)
+                        {
+                            if (cvvtxt.Text.Length == 3 && cvvno >= 0)
+                            {
+                                Session["pay"] = "yes";
+                                string user = Session["user"].ToString();
+                                SqlCommand cardinfo = new SqlCommand("insert into cardinfo values('" + user + "','" + cardnumtxt.Text + "','" + Nametxt.Text + "','" + expmonthtxt.Text + "','" + expyear.Text + "','" + cvvtxt.Text + "')", con);
+                                con.Open();
+                                cardinfo.ExecuteNonQuery();
+                                con.Close();
+                                Response.AddHeader("REFRESH", "0.1;URL=movieinfo.aspx?param=" + Session["moviename"].ToString() + "");
+
+                            }
+                            else
+                            {
+                                Response.Write("<script>alert('Invalid CVV length')</script>");
+                                Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
+                            }
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert('Invalid card number')</script>");
+                            Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
+                        }
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Incorrect card expiry')</script>");
+                        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('Enter Correct Owner Name')</script>");
+                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
+                }
+            }
+            else
+            {
+                Response.Write("<script>alert('Please fill all fields')</script>");
+                Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
+            }
+        }
+        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bookbtn.Enabled = false;
+            string a = DropDownList1.SelectedItem.ToString();
+            if (a == "Choose Date")
+            {
+                DropDownList2.Enabled = false;
+                Label15.Visible = true;
+            }
+            else
+            {
+                DropDownList2.Enabled = true;
+                moviedate = DropDownList1.SelectedItem.ToString();
+                Session["date"] = moviedate;
+
+                foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == MovieTableInfos.Decrypt(param_movie_id) && seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate))
+                {
+                    DropDownList2.Items.Add(seatsinfos.MovieDateTime.ToString("HH:mm"));
+                }
+            }
+        }
+        protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string a = DropDownList2.SelectedItem.ToString();
+            if (a == "Choose Time")
+            {
+                Label16.Visible = true;
+            }
+            else
+            {
+                movietime = DropDownList2.SelectedItem.ToString();
+                Alreadybooked();
+            }
+        }
+
+        #region Seats
         protected void s1_Click(object sender, EventArgs e)
         {
             if (tempbookseat[1] == 0)
@@ -574,7 +719,7 @@ namespace Movie_Ticket_Management
                 ViewState["Clicks"] = ClicksCount;
                 totalamt();
             }
-            
+
         }
 
         protected void s2_Click(object sender, EventArgs e)
@@ -1185,183 +1330,7 @@ namespace Movie_Ticket_Management
             }
         }
 
-        protected void log_Click(object sender, EventArgs e)
-        {
-            if (user.Text!="" && pass.Text != "")
-            {
-                   
-                    int temp = 0;
-                    String checkq = "select count(*) from register where Username='" + user.Text + "'";
-                    con.Open();
-                    SqlCommand cmd1 = new SqlCommand(checkq, con);
-                    temp = Convert.ToInt32(cmd1.ExecuteScalar().ToString().Replace(" ", ""));
-                    con.Close();
-                    if (temp == 1)
-                    {
-                        con.Open();
-                        String checkidpass = "select password from register where Username='" + user.Text + "'";
-                        SqlCommand cmdidpass = new SqlCommand(checkidpass, con);
-                        String userpass = cmdidpass.ExecuteScalar().ToString().Replace(" ", "");
-                        con.Close();
-                        if (userpass == pass.Text)
-                        {
-                            string a = myVar.Replace("?", "");
-                            Session["user"] = user.Text;
-                            Response.AddHeader("REFRESH", "0.1;URL=movieinfo.aspx?param="+a+"");
-                        }
-                        else
-                        {
-                        Response.Write("<script>alert('Incorrect Username or Password')</script>");
-                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
-                    }
+        #endregion
 
-                    }
-                    else
-                    {
-                    Response.Write("<script>alert('Incorrect Username or Password')</script>");
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
-                }
-            }
-            else
-            {
-                Response.Write("<script>alert('Please fill all fields')</script>");
-                Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");
-            }
-        }
-
-        protected void paybtn_Click(object sender, EventArgs e)//payment
-        {
-            if (cardnumtxt.Text != "" && cvvtxt.Text != "" && expmonthtxt.Text != "" && expyear.Text != "" && Nametxt.Text != "")
-            {
-                int mon = DateTime.Now.Month;
-                int year = DateTime.Now.Year;
-                int cyear = Convert.ToInt32(expyear.Text);
-                int cmon = Convert.ToInt32(expmonthtxt.Text);
-                long cardno = Convert.ToInt64(cardnumtxt.Text);
-                int cvvno = Convert.ToInt32(cvvtxt.Text);
-                int t = 0;
-                var regexItem = new Regex("@|!#$%&/()=?»«@£§€{}.-;'<>_,[1-9]");
-                if (System.Text.RegularExpressions.Regex.IsMatch(Nametxt.Text, "^[a-zA-Z\x20]+$"))
-                {
-                    if (cmon > 0 && cyear > 0)
-                    {
-                        t = 1;
-                    }
-                    if (cyear >= year && t == 1 && cmon <= 12)
-                    {
-                        if (cardnumtxt.Text.Length == 12 && cardno >= 0)
-                        {
-                            if (cvvtxt.Text.Length == 3 && cvvno >= 0)
-                            {
-                                Session["pay"] = "yes";
-                                string user = Session["user"].ToString();
-                                SqlCommand cardinfo = new SqlCommand("insert into cardinfo values('" + user + "','" + cardnumtxt.Text + "','" + Nametxt.Text + "','" + expmonthtxt.Text + "','" + expyear.Text + "','" + cvvtxt.Text + "')", con);
-                                con.Open();
-                                cardinfo.ExecuteNonQuery();
-                                con.Close();
-                                string a = myVar.Replace("?", "");
-                                Response.AddHeader("REFRESH", "0.1;URL=movieinfo.aspx?param=" + a + "");
-
-                            }
-                            else
-                            {
-                                Response.Write("<script>alert('Invalid CVV length')</script>");
-                                Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
-                            }
-                        }
-                        else
-                        {
-                            Response.Write("<script>alert('Invalid card number')</script>");
-                            Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
-                        }
-                    }
-                    else
-                    {
-                        Response.Write("<script>alert('Incorrect card expiry')</script>");
-                        Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
-                    }                 
-                }
-                else
-                {
-                    Response.Write("<script>alert('Enter Correct Owner Name')</script>");
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
-                }
-            }
-            else
-            {
-                Response.Write("<script>alert('Please fill all fields')</script>");
-                Response.Write("<script>window.location.href='movieinfo.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");
-            }
-        }
-        private void imagedisplay()
-        {
-            string id=null;
-            string cs = ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(cs))
-            {
-                SqlCommand ids = new SqlCommand("select * from tblImages where Name='" + Session["moviename"].ToString() + "'", con);
-                con.Open();
-                SqlDataReader rd = ids.ExecuteReader();
-                while(rd.Read())
-                {
-                   id = rd[0].ToString();
-                }
-                con.Close();
-                SqlCommand cmd = new SqlCommand("spGetImageById", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                SqlParameter paramId = new SqlParameter()
-                {
-                    ParameterName = "@Id",
-                    Value = id
-                };
-                cmd.Parameters.Add(paramId);
-
-                con.Open();
-                byte[] bytes = (byte[])cmd.ExecuteScalar();
-                string strBase64 = Convert.ToBase64String(bytes);
-                movieimg.ImageUrl = "data:Image/png;base64," + strBase64;
-            }
-        }
-
-        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bookbtn.Enabled = false;
-            string a = DropDownList1.SelectedItem.ToString();
-            if(a=="Choose Date")
-            {
-                DropDownList2.Enabled = false;
-                Label15.Visible = true;
-            }
-            else
-            {
-                DropDownList2.Enabled = true;
-                moviedate = DropDownList1.SelectedItem.ToString();
-                Session["date"]= DropDownList1.SelectedItem.ToString(); ;
-                moviesss = DropDownList1.SelectedItem.ToString();
-                SqlCommand gettime = new SqlCommand("select time from Seatstatus where name='" + Session["moviename"].ToString() + "' AND date='" + moviedate + "'", con);
-                con.Open();
-                SqlDataReader rd = gettime.ExecuteReader();
-                while (rd.Read())
-                {
-                    DropDownList2.Items.Add(rd[0].ToString());
-                }
-                con.Close();      
-            }
-        }
-
-        protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string a = DropDownList2.SelectedItem.ToString();
-            if (a=="Choose Time")
-            {
-                Label16.Visible = true;
-            }
-            else
-            {
-                movietime = DropDownList2.SelectedItem.ToString();
-                alreadybooked();
-            }
-        }
     }
 }

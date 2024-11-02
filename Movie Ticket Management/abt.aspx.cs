@@ -58,29 +58,7 @@ namespace Movie_Ticket_Management
 
         protected void searchimgbtn_Click(object sender, ImageClickEventArgs e)
         {
-            if (searchtxt.Text != null)
-            {
-                string movien = "select count(*) from movielist where Name='" + searchtxt.Text + "'";
-                SqlCommand cmd = new SqlCommand(movien, conn);
-                conn.Open();
-                int check = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-                conn.Close();
-                if (check == 1)
-                {
-                    Session["moviename"] = searchtxt.Text;
-                    Response.Write("<script>window.location.href='movieinfo.aspx?param=" + searchtxt.Text + "';</script>");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Movie does not exist in database,please search for another movie')</script>");
-                    Response.AddHeader("REFRESH", "0.1;URL=abt.aspx");
-                }
-            }
-            else
-            {
-                Response.Write("<script>alert('Enter some text before search!')</script>");
-                Response.AddHeader("REFRESH", "0.1;URL=abt.aspx");
-            }
+            
         }
 
         protected void logoimgbtn_Click(object sender, ImageClickEventArgs e)

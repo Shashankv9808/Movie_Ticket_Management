@@ -5,19 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-        <!--movie name passing to another page-->
        <script type="text/javascript">
-           function somefunction(b) {
-               var a = b.attributes;
-               for (var i = a.length; i--;) {
-                   var n
-                   if (a[i].name == 'name') {
-                       n = a[i].value;
-                       window.location.href = "movieinfo.aspx?param=" + n;
-                   }
-               }
-               return true;
-           }
            function openNav() {
                document.getElementById("mySidenav").style.width = "250px";
            }
@@ -25,7 +13,7 @@
            function closeNav() {
                document.getElementById("mySidenav").style.width = "0";
            }
-       </script><!--movie name passing to another page-->
+       </script>
     <style>
         html {
             font-family: Arial, Helvetica, sans-serif;
@@ -232,13 +220,11 @@
         <asp:Repeater ID="MovieRepeater" runat="server" OnItemDataBound="MovieRepeater_ItemDataBound">
             <ItemTemplate>
                 <div class="c1">
-                    <asp:Image ID="MovieImage" runat="server" />
-                    <a href="#" onclick="somefunction(this);">
+                    <asp:Image ID="MovieImage" runat="server" Style="cursor:pointer;" />
                         <img src="/images/The-heart.png" style="width: 17px; height: 17px; padding-top: 17px;" alt="Heart" />
                         <asp:Literal ID="RatingLiteral" runat="server"></asp:Literal>
                         &nbsp;&nbsp;
                         <asp:Literal ID="MovieNameLiteral" runat="server"></asp:Literal>
-                    </a>
                 </div>
             </ItemTemplate>
         </asp:Repeater>

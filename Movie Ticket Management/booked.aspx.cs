@@ -72,7 +72,7 @@ namespace Movie_Ticket_Management
                 if (check == 1)
                 {
                     Session["moviename"] = searchtxt.Text;
-                    Response.Redirect("movieinfo.aspx");
+                    Response.Redirect("MovieDetails.aspx");
                 }
                 else
                 {
