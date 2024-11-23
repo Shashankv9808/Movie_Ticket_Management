@@ -92,7 +92,7 @@ namespace Movie_Ticket_Management.DataAccess
         }
         internal static List<MovieSeatSatus> GetSeatStatusDataByMovieID(long movieID)
         {
-            List<MovieSeatSatus> movie_seat_status_data = new List<MovieSeatSatus>();
+            List<MovieSeatSatus> movie_seat_status_list = new List<MovieSeatSatus>();
             try
             {
                 using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
@@ -106,7 +106,7 @@ namespace Movie_Ticket_Management.DataAccess
                         {
                             while (rd.Read())
                             {
-                                MovieSeatSatus seatSatus = new MovieSeatSatus
+                                MovieSeatSatus seat_status_data = new MovieSeatSatus
                                 {
                                     SeatStatusID = rd.GetInt64(MovieSeatSatusDataInfoFields.SeatStatusID),
                                     MovieID = rd.GetInt64(MovieSeatSatusDataInfoFields.MovieID),
@@ -142,6 +142,7 @@ namespace Movie_Ticket_Management.DataAccess
                                     s30 = rd.GetString(MovieSeatSatusDataInfoFields.s30),
                                     MovieDateTime = rd.GetDateTime(MovieSeatSatusDataInfoFields.MovieDateTime)
                                 };
+                                movie_seat_status_list.Add(seat_status_data);
                             }
                         }
                     }
@@ -151,7 +152,7 @@ namespace Movie_Ticket_Management.DataAccess
             {
                 string exception = ex.Message;
             }
-            return movie_seat_status_data;
+            return movie_seat_status_list;
         }
     }
 }

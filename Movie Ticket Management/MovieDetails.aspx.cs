@@ -20,7 +20,7 @@ namespace Movie_Ticket_Management
         int ClicksCount;
         public decimal costofmovie;
         public decimal totalamts;
-        public string param_movie_id;
+        public Int64 _MovieID;
         public int numofseats;
         private MovieTableInfos _MovieTableInfos;
         private List<MovieSeatSatus> _SeatSatus;
@@ -41,18 +41,19 @@ namespace Movie_Ticket_Management
                 }
                 try
                 {
-                    param_movie_id = Request.QueryString["MovieDetails"];//aquiring movie name from url if it's from HomePage
-                    param_movie_id = param_movie_id.Replace("?#modal", "");
-                    param_movie_id = param_movie_id.Replace("?#modals", "");
-                    param_movie_id = param_movie_id.Replace("?", "");
+                    string decrypted_movie_id = MovieTableInfos.Decrypt(Request.QueryString["MovieDetails"]).ToString();    //aquiring movie name from url if it's from HomePage
+                    decrypted_movie_id = decrypted_movie_id.Replace("?#modal", "");
+                    decrypted_movie_id = decrypted_movie_id.Replace("?#modals", "");
+                    decrypted_movie_id = decrypted_movie_id.Replace("?", "");
+                    _MovieID = Convert.ToInt64(decrypted_movie_id);
                 }
                 catch (Exception ex)
                 {
                     string exception = ex.Message;
                 }
-                _MovieTableInfos = MovieDetailsDataAccess.GetMovieDataByID(MovieTableInfos.Decrypt(param_movie_id));
+                _MovieTableInfos = MovieDetailsDataAccess.GetMovieDataByID(_MovieID);
                 Session["moviename"] = _MovieTableInfos.MovieName;
-                Session["MovieIDasParam"] = param_movie_id;
+                Session["MovieIDasParam"] = _MovieID;
                 ViewState["MovieInfoData"] = _MovieTableInfos;
 
 
@@ -73,14 +74,14 @@ namespace Movie_Ticket_Management
                     ViewState["Clicks"] = 0;
                 }
 
-                _SeatSatus = MovieDetailsDataAccess.GetSeatStatusDataByMovieID(MovieTableInfos.Decrypt(param_movie_id));
+                _SeatSatus = MovieDetailsDataAccess.GetSeatStatusDataByMovieID(_MovieID);
                 ViewState["SeatSatusInfoData"] = _SeatSatus;
             }
             else
             {
                 _SeatSatus = (List<MovieSeatSatus>)ViewState["SeatSatusInfoData"];
                 _MovieTableInfos = (MovieTableInfos)ViewState["MovieInfoData"];
-                param_movie_id = (string)Session["MovieIDasParam"];
+                _MovieID = Convert.ToInt64(Session["MovieIDasParam"]);
             }
 
             //Populate data into elements
@@ -159,7 +160,7 @@ namespace Movie_Ticket_Management
                     con.Open();
                     SqlDataReader rd = cmd.ExecuteReader();
 
-                    foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == MovieTableInfos.Decrypt(param_movie_id) &&
+                    foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID &&
                                                                                     seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate &&
                                                                                     seats.MovieDateTime.ToString("HH:mm") == movietime))
                     {
@@ -680,7 +681,7 @@ namespace Movie_Ticket_Management
                 moviedate = DropDownList1.SelectedItem.ToString();
                 Session["date"] = moviedate;
 
-                foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == MovieTableInfos.Decrypt(param_movie_id) && seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate))
+                foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID && seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate))
                 {
                     DropDownList2.Items.Add(seatsinfos.MovieDateTime.ToString("HH:mm"));
                 }
