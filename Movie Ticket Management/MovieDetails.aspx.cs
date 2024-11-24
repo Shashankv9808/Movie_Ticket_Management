@@ -13,17 +13,13 @@ namespace Movie_Ticket_Management
 {
     public partial class MovieDetails : Page
     {
-        public string moviedate;
-        public string movietime;
-        static int[] bookedseat;
-        static int[] tempbookseat;
         int ClicksCount;
         public decimal costofmovie;
         public decimal totalamts;
         public Int64 _MovieID;
         public int numofseats;
         private MovieTableInfos _MovieTableInfos;
-        private List<MovieSeatSatus> _SeatSatus;
+        private List<MovieSeatStatus> _SeatSatus;
         Dictionary<int, Button> _SeatsButtonObjects;
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DatabaseConnectString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
@@ -55,8 +51,8 @@ namespace Movie_Ticket_Management
                 Session["moviename"] = _MovieTableInfos.MovieName;
                 Session["MovieIDasParam"] = _MovieID;
                 ViewState["MovieInfoData"] = _MovieTableInfos;
-
-
+                _SeatSatus = MovieDetailsDataAccess.GetSeatStatusDataByMovieID(_MovieID);
+                ViewState["SeatSatusInfoData"] = _SeatSatus;
                 //if (Session["user"] != null)//checking login or not
                 //{
                 //    if (Session["pay"].ToString() == "no")
@@ -73,22 +69,19 @@ namespace Movie_Ticket_Management
                 {
                     ViewState["Clicks"] = 0;
                 }
-
-                _SeatSatus = MovieDetailsDataAccess.GetSeatStatusDataByMovieID(_MovieID);
-                ViewState["SeatSatusInfoData"] = _SeatSatus;
+                //Populate data into elements
+                foreach (MovieSeatStatus seatsinfos in _SeatSatus)
+                {
+                    ddl_movie_date.Items.Add(seatsinfos.MovieDateTime.Date.ToString("dd/MM/yyyy"));
+                }
             }
             else
             {
-                _SeatSatus = (List<MovieSeatSatus>)ViewState["SeatSatusInfoData"];
-                _MovieTableInfos = (MovieTableInfos)ViewState["MovieInfoData"];
+                _SeatSatus = ViewState["SeatSatusInfoData"] as List<MovieSeatStatus>;
+                _MovieTableInfos = ViewState["MovieInfoData"] as MovieTableInfos;
                 _MovieID = Convert.ToInt64(Session["MovieIDasParam"]);
             }
 
-            //Populate data into elements
-            foreach (MovieSeatSatus seatsinfos in _SeatSatus)
-            {
-                DropDownList1.Items.Add(seatsinfos.MovieDateTime.Date.ToString("dd/MM/yyyy"));
-            }
             movienamelabel.Text = _MovieTableInfos.MovieName;
             herolabel.Text = _MovieTableInfos.HeroName;
             heroinlabel.Text = _MovieTableInfos.HeroinName;
@@ -103,9 +96,7 @@ namespace Movie_Ticket_Management
         }
         private void Initialize()
         {
-            bookedseat = new int[31];
-            tempbookseat = Enumerable.Repeat(0, 31).ToArray();
-            DropDownList1.Enabled = true;
+            ddl_movie_date.Enabled = true;
             _SeatsButtonObjects = new Dictionary<int, Button>
             {
                 { 1, s1 },
@@ -144,8 +135,7 @@ namespace Movie_Ticket_Management
         //display of booking seats
         private void Alreadybooked()
         {
-            int i = 0, j = 0;
-            if (Session["date"] == null && movietime == "")
+            if (string.IsNullOrEmpty(ddl_movie_date.SelectedItem.ToString()) && string.IsNullOrEmpty(ddl_movie_time.SelectedItem.ToString()))
             {
                 Label15.Visible = true;
                 Label16.Visible = true;
@@ -154,304 +144,314 @@ namespace Movie_Ticket_Management
             {
                 if (Session["moviename"] != null)
                 {
-                    string nameofmovie = Session["moviename"].ToString();
-                    string myquery = "select * from Seatstatus where name='" + nameofmovie + "' AND date='" + Session["date"].ToString() + "' AND time='" + movietime + "'";
-                    SqlCommand cmd = new SqlCommand(myquery, con);
-                    con.Open();
-                    SqlDataReader rd = cmd.ExecuteReader();
-
-                    foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID &&
-                                                                                    seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate &&
-                                                                                    seats.MovieDateTime.ToString("HH:mm") == movietime))
+                    phSeatDraw.Visible = true;
+                    foreach (MovieSeatStatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID &&
+                                                                                    seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == ddl_movie_date.SelectedItem.ToString() &&
+                                                                                    seats.MovieDateTime.ToString("HH:mm") == ddl_movie_time.SelectedItem.ToString()))
                     {
-                        for (i = 2; i <= 31; i += 1, j += 1)
+                        #region condition
+                        if (seatsinfos.s1.Trim() == "A")
                         {
-                            string status = rd.GetString(i).Replace(" ", "");
-                            if (status == "B")
-                            {
-                                bookedseat[j] = 1;
-                                if (i == 2)
-                                {
-                                    s1.BackColor = System.Drawing.Color.Red;
-                                    s1.Enabled = false;
-                                }
-                                if (i == 3)
-                                {
-                                    s2.BackColor = System.Drawing.Color.Red;
-                                    s2.Enabled = false;
-                                }
-                                if (i == 4)
-                                {
-                                    s3.BackColor = System.Drawing.Color.Red;
-                                    s3.Enabled = false;
-                                }
-                                if (i == 5)
-                                {
-                                    s4.BackColor = System.Drawing.Color.Red;
-                                    s4.Enabled = false;
-                                }
-                                if (i == 6)
-                                {
-                                    s5.BackColor = System.Drawing.Color.Red;
-                                    s5.Enabled = false;
-                                }
-                                if (i == 7)
-                                {
-                                    s6.BackColor = System.Drawing.Color.Red;
-                                    s6.Enabled = false;
-                                }
-                                if (i == 8)
-                                {
-                                    s7.BackColor = System.Drawing.Color.Red;
-                                    s7.Enabled = false;
-                                }
-                                if (i == 9)
-                                {
-                                    s8.BackColor = System.Drawing.Color.Red;
-                                    s8.Enabled = false;
-                                }
-                                if (i == 10)
-                                {
-                                    s9.BackColor = System.Drawing.Color.Red;
-                                    s9.Enabled = false;
-                                }
-                                if (i == 11)
-                                {
-                                    s10.BackColor = System.Drawing.Color.Red;
-                                    s10.Enabled = false;
-                                }
-                                if (i == 12)
-                                {
-                                    s11.BackColor = System.Drawing.Color.Red;
-                                    s11.Enabled = false;
-                                }
-                                if (i == 13)
-                                {
-                                    s12.BackColor = System.Drawing.Color.Red;
-                                    s12.Enabled = false;
-                                }
-                                if (i == 14)
-                                {
-                                    s13.BackColor = System.Drawing.Color.Red;
-                                    s13.Enabled = false;
-                                }
-                                if (i == 15)
-                                {
-                                    s14.BackColor = System.Drawing.Color.Red;
-                                    s14.Enabled = false;
-                                }
-                                if (i == 16)
-                                {
-                                    s15.BackColor = System.Drawing.Color.Red;
-                                    s15.Enabled = false;
-                                }
-                                if (i == 17)
-                                {
-                                    s16.BackColor = System.Drawing.Color.Red;
-                                    s16.Enabled = false;
-                                }
-                                if (i == 18)
-                                {
-                                    s17.BackColor = System.Drawing.Color.Red;
-                                    s17.Enabled = false;
-                                }
-                                if (i == 19)
-                                {
-                                    s18.BackColor = System.Drawing.Color.Red;
-                                    s18.Enabled = false;
-                                }
-                                if (i == 20)
-                                {
-                                    s19.BackColor = System.Drawing.Color.Red;
-                                    s19.Enabled = false;
-                                }
-                                if (i == 21)
-                                {
-                                    s20.BackColor = System.Drawing.Color.Red;
-                                    s20.Enabled = false;
-                                }
-                                if (i == 22)
-                                {
-                                    s21.BackColor = System.Drawing.Color.Red;
-                                    s21.Enabled = false;
-                                }
-                                if (i == 23)
-                                {
-                                    s22.BackColor = System.Drawing.Color.Red;
-                                    s22.Enabled = false;
-                                }
-                                if (i == 24)
-                                {
-                                    s23.BackColor = System.Drawing.Color.Red;
-                                    s23.Enabled = false;
-                                }
-                                if (i == 25)
-                                {
-                                    s24.BackColor = System.Drawing.Color.Red;
-                                    s24.Enabled = false;
-                                }
-                                if (i == 26)
-                                {
-                                    s25.BackColor = System.Drawing.Color.Red;
-                                    s25.Enabled = false;
-                                }
-                                if (i == 27)
-                                {
-                                    s26.BackColor = System.Drawing.Color.Red;
-                                    s26.Enabled = false;
-                                }
-                                if (i == 28)
-                                {
-                                    s27.BackColor = System.Drawing.Color.Red;
-                                    s27.Enabled = false;
-                                }
-                                if (i == 29)
-                                {
-                                    s28.BackColor = System.Drawing.Color.Red;
-                                    s28.Enabled = false;
-                                }
-                                if (i == 30)
-                                {
-                                    s29.BackColor = System.Drawing.Color.Red;
-                                    s29.Enabled = false;
-                                }
-                                if (i == 31)
-                                {
-                                    s30.BackColor = System.Drawing.Color.Red;
-                                    s30.Enabled = false;
-                                }
-                                bookbtn.Enabled = true;
-                                PlaceHolder10.Visible = true;
-                            }
-                            if (status == "A")
-                            {
-                                bookedseat[j] = 0;
-                                if (i == 2)
-                                {
-                                    s1.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 3)
-                                {
-                                    s2.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 4)
-                                {
-                                    s3.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 5)
-                                {
-                                    s4.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 6)
-                                {
-                                    s5.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 7)
-                                {
-                                    s6.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 8)
-                                {
-                                    s7.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 9)
-                                {
-                                    s8.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 10)
-                                {
-                                    s9.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 11)
-                                {
-                                    s10.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 12)
-                                {
-                                    s11.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 13)
-                                {
-                                    s12.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 14)
-                                {
-                                    s13.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 15)
-                                {
-                                    s14.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 16)
-                                {
-                                    s15.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 17)
-                                {
-                                    s16.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 18)
-                                {
-                                    s17.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 19)
-                                {
-                                    s18.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 20)
-                                {
-                                    s19.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 21)
-                                {
-                                    s20.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 22)
-                                {
-                                    s21.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 23)
-                                {
-                                    s22.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 24)
-                                {
-                                    s23.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 25)
-                                {
-                                    s24.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 26)
-                                {
-                                    s25.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 27)
-                                {
-                                    s26.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 28)
-                                {
-                                    s27.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 29)
-                                {
-                                    s28.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 30)
-                                {
-                                    s29.BackColor = System.Drawing.Color.Gray;
-                                }
-                                if (i == 31)
-                                {
-                                    s30.BackColor = System.Drawing.Color.Gray;
-                                }
-                            }
+                            _SeatsButtonObjects[1].BackColor = System.Drawing.Color.Green;
                         }
-                    }
-                    con.Close();
-                    rd.Close();
+                        else
+                        {
+                            _SeatsButtonObjects[1].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[1].Enabled = false;
 
+                        }
+
+                        if (seatsinfos.s2.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[2].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[2].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[2].Enabled = false;
+                        }
+
+                        if (seatsinfos.s3.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[3].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[3].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[3].Enabled = false;
+                        }
+
+                        if (seatsinfos.s4.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[4].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[4].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[4].Enabled = false;
+                        }
+
+                        if (seatsinfos.s5.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[5].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[5].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[5].Enabled = false;
+                        }
+
+                        if (seatsinfos.s6.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[6].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[6].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[6].Enabled = false;
+                        }
+
+                        if (seatsinfos.s7.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[7].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[7].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[7].Enabled = false;
+                        }
+
+                        if (seatsinfos.s8.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[8].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[8].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[8].Enabled = false;
+                        }
+
+                        if (seatsinfos.s9.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[9].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[9].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[9].Enabled = false;
+                        }
+
+                        if (seatsinfos.s10.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[10].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[10].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[10].Enabled = false;
+                        }
+
+                        if (seatsinfos.s11.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[11].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[11].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[11].Enabled = false;
+                        }
+
+                        if (seatsinfos.s12.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[12].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[12].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[12].Enabled = false;
+                        }
+
+                        if (seatsinfos.s13.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[13].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[13].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[13].Enabled = false;
+                        }
+
+                        if (seatsinfos.s14.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[14].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[14].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[14].Enabled = false;
+                        }
+
+                        if (seatsinfos.s15.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[15].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[15].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[15].Enabled = false;
+                        }
+
+                        if (seatsinfos.s16.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[16].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[16].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[16].Enabled = false;
+                        }
+
+                        if (seatsinfos.s17.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[17].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[17].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[17].Enabled = false;
+                        }
+
+                        if (seatsinfos.s18.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[18].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[18].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[18].Enabled = false;
+                        }
+
+                        if (seatsinfos.s19.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[19].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[19].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[19].Enabled = false;
+                        }
+
+                        if (seatsinfos.s20.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[20].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[20].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[20].Enabled = false;
+                        }
+
+                        if (seatsinfos.s21.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[21].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[21].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[21].Enabled = false;
+                        }
+
+                        if (seatsinfos.s22.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[22].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[22].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[22].Enabled = false;
+                        }
+
+                        if (seatsinfos.s23.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[23].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[23].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[23].Enabled = false;
+                        }
+
+                        if (seatsinfos.s24.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[24].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[24].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[24].Enabled = false;
+                        }
+
+                        if (seatsinfos.s25.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[25].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[25].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[25].Enabled = false;
+                        }
+
+                        if (seatsinfos.s26.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[26].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[26].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[26].Enabled = false;
+                        }
+
+                        if (seatsinfos.s27.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[27].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[27].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[27].Enabled = false;
+                        }
+
+                        if (seatsinfos.s28.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[28].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[28].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[28].Enabled = false;
+                        }
+
+                        if (seatsinfos.s29.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[29].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[29].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[29].Enabled = false;
+                        }
+
+                        if (seatsinfos.s30.Trim() == "A")
+                        {
+                            _SeatsButtonObjects[30].BackColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            _SeatsButtonObjects[30].BackColor = System.Drawing.Color.Gray;
+                            _SeatsButtonObjects[30].Enabled = false;
+                        }
+                        #endregion
+                    }
                 }
                 else
                 {
@@ -507,59 +507,52 @@ namespace Movie_Ticket_Management
         }
         protected void Button1_Click(object sender, EventArgs e)//book button
         {
-            int i, ccs = 0;
-            for (i = 0; i <= 30; i++)
-            {
-                if (tempbookseat[i] == 1)
-                {
-                    ccs += 1;
-                }
-            }
-            if (ccs > 0)//checking seat is selected or not
-            {
-                if (Session["user"] != null)//checking login or not
-                {
-                    if (Session["pay"].ToString() == "yes")
-                    {
-                        for (i = 0; i <= 30; i++)
-                        {
-                            if (tempbookseat[i] == 1)
-                            {
-                                numofseats += 1;
-                                string f = "s" + i.ToString();
-                                string kk = Session["moviename"].ToString();
-                                String updatedata = "Update SeatStatus set " + f + " ='B' where name='" + kk + "'";
-                                SqlCommand cmd = new SqlCommand(updatedata, con);
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
-                                // Session["pay"] = "no";
-                            }
-                        }
-                        Response.Write("<script>alert('" + totalamts + "')</script>");
-                        string user = Session["user"].ToString();
-                        SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
-                        con.Open();
-                        hist.ExecuteNonQuery();
-                        con.Close();
-                        Session["tempbooking"] = tempbookseat;
-                        Response.Redirect("booked.aspx?#modal");
-                    }
-                    else
-                    {
+            //int i, ccs = 0;
+            //if (ccs > 0)//checking seat is selected or not
+            //{
+            //    if (Session["user"] != null)//checking login or not
+            //    {
+            //        if (Session["pay"].ToString() == "yes")
+            //        {
+            //            for (i = 0; i <= 30; i++)
+            //            {
+            //                if (tempbookseat[i] == 1)
+            //                {
+            //                    numofseats += 1;
+            //                    string f = "s" + i.ToString();
+            //                    string kk = Session["moviename"].ToString();
+            //                    String updatedata = "Update SeatStatus set " + f + " ='B' where name='" + kk + "'";
+            //                    SqlCommand cmd = new SqlCommand(updatedata, con);
+            //                    con.Open();
+            //                    cmd.ExecuteNonQuery();
+            //                    con.Close();
+            //                    // Session["pay"] = "no";
+            //                }
+            //            }
+            //            Response.Write("<script>alert('" + totalamts + "')</script>");
+            //            string user = Session["user"].ToString();
+            //            SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
+            //            con.Open();
+            //            hist.ExecuteNonQuery();
+            //            con.Close();
+            //            Session["tempbooking"] = tempbookseat;
+            //            Response.Redirect("booked.aspx?#modal");
+            //        }
+            //        else
+            //        {
 
-                        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
-                    }
-                }
-                else
-                {
-                    Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
-                }
-            }
-            else
-            {
-                Label14.Visible = true;
-            }
+            //            Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
+            //    }
+            //}
+            //else
+            //{
+            //    Label14.Visible = true;
+            //}
         }
         protected void log_Click(object sender, EventArgs e)
         {
@@ -669,34 +662,28 @@ namespace Movie_Ticket_Management
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
             bookbtn.Enabled = false;
-            string a = DropDownList1.SelectedItem.ToString();
-            if (a == "Choose Date")
+            if (ddl_movie_date.SelectedItem.ToString() == "Choose Date")
             {
-                DropDownList2.Enabled = false;
+                ddl_movie_time.Enabled = false;
                 Label15.Visible = true;
             }
             else
             {
-                DropDownList2.Enabled = true;
-                moviedate = DropDownList1.SelectedItem.ToString();
-                Session["date"] = moviedate;
-
-                foreach (MovieSeatSatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID && seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == moviedate))
+                ddl_movie_time.Enabled = true;
+                foreach (MovieSeatStatus seatsinfos in _SeatSatus.Where(seats => seats.MovieID == _MovieID && seats.MovieDateTime.Date.ToString("dd/MM/yyyy") == ddl_movie_date.SelectedItem.ToString()))
                 {
-                    DropDownList2.Items.Add(seatsinfos.MovieDateTime.ToString("HH:mm"));
+                    ddl_movie_time.Items.Add(seatsinfos.MovieDateTime.ToString("HH:mm"));
                 }
             }
         }
         protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string a = DropDownList2.SelectedItem.ToString();
-            if (a == "Choose Time")
+            if (ddl_movie_time.SelectedItem.ToString() == "Choose Time")
             {
                 Label16.Visible = true;
             }
             else
             {
-                movietime = DropDownList2.SelectedItem.ToString();
                 Alreadybooked();
             }
         }
@@ -704,631 +691,485 @@ namespace Movie_Ticket_Management
         #region Seats
         protected void s1_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[1] == 0)
+            if (_SeatsButtonObjects[1].BackColor == System.Drawing.Color.Green)
             {
-                s1.BackColor = System.Drawing.Color.Green;
-                tempbookseat[1] = 1;
+                _SeatsButtonObjects[1].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s1.BackColor = System.Drawing.Color.Blue;
-                tempbookseat[1] = 0;
+                _SeatsButtonObjects[1].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s2_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[2] == 0)
+            if (_SeatsButtonObjects[2].BackColor == System.Drawing.Color.Green)
             {
-                s2.BackColor = System.Drawing.Color.Green;
-                tempbookseat[2] = 1;
+                _SeatsButtonObjects[2].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
+                
             }
             else
             {
-                s2.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[2] = 0;
+                _SeatsButtonObjects[2].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s3_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[3] == 0)
+            if (_SeatsButtonObjects[3].BackColor == System.Drawing.Color.Green)
             {
-                s3.BackColor = System.Drawing.Color.Green;
-                tempbookseat[3] = 1;
+                _SeatsButtonObjects[3].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s3.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[3] = 0;
+                _SeatsButtonObjects[3].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s4_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[4] == 0)
+            if (_SeatsButtonObjects[4].BackColor == System.Drawing.Color.Green)
             {
-                s4.BackColor = System.Drawing.Color.Green;
-                tempbookseat[4] = 1;
+                _SeatsButtonObjects[4].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s4.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[4] = 0;
+                _SeatsButtonObjects[4].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s5_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[5] == 0)
+            if (_SeatsButtonObjects[5].BackColor == System.Drawing.Color.Green)
             {
-                s5.BackColor = System.Drawing.Color.Green;
-                tempbookseat[5] = 1;
+                _SeatsButtonObjects[5].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s5.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[5] = 0;
+                _SeatsButtonObjects[5].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
 
         }
 
         protected void s6_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[6] == 0)
+            if (_SeatsButtonObjects[6].BackColor == System.Drawing.Color.Green)
             {
-                s6.BackColor = System.Drawing.Color.Green;
-                tempbookseat[6] = 1;
+                _SeatsButtonObjects[6].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s6.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[6] = 0;
+                _SeatsButtonObjects[6].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s7_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[7] == 0)
+            if (_SeatsButtonObjects[7].BackColor == System.Drawing.Color.Green)
             {
-                s7.BackColor = System.Drawing.Color.Green;
-                tempbookseat[7] = 1;
+                _SeatsButtonObjects[7].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s7.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[7] = 0;
+                _SeatsButtonObjects[7].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s8_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[8] == 0)
+            if (_SeatsButtonObjects[8].BackColor == System.Drawing.Color.Green)
             {
-                s8.BackColor = System.Drawing.Color.Green;
-                tempbookseat[8] = 1;
+                _SeatsButtonObjects[8].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s8.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[8] = 0;
+                _SeatsButtonObjects[8].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s9_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[9] == 0)
+            if (_SeatsButtonObjects[9].BackColor == System.Drawing.Color.Green)
             {
-                s9.BackColor = System.Drawing.Color.Green;
-                tempbookseat[9] = 1;
+                _SeatsButtonObjects[9].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s9.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[9] = 0;
+                _SeatsButtonObjects[9].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s10_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[10] == 0)
+            if (_SeatsButtonObjects[10].BackColor == System.Drawing.Color.Green)
             {
-                s10.BackColor = System.Drawing.Color.Green;
-                tempbookseat[10] = 1;
+                _SeatsButtonObjects[10].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
+                
             }
             else
             {
-                s10.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[10] = 0;
+                _SeatsButtonObjects[10].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s11_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[11] == 0)
+            if (_SeatsButtonObjects[11].BackColor == System.Drawing.Color.Green)
             {
-                s11.BackColor = System.Drawing.Color.Green;
-                tempbookseat[11] = 1;
+                _SeatsButtonObjects[11].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s11.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[11] = 0;
+                _SeatsButtonObjects[11].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s12_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[12] == 0)
+            if (_SeatsButtonObjects[12].BackColor == System.Drawing.Color.Green)
             {
-                s12.BackColor = System.Drawing.Color.Green;
-                tempbookseat[12] = 1;
+                _SeatsButtonObjects[12].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s12.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[12] = 0;
+                _SeatsButtonObjects[12].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s13_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[13] == 0)
+            if (_SeatsButtonObjects[13].BackColor == System.Drawing.Color.Green)
             {
-                s13.BackColor = System.Drawing.Color.Green;
-                tempbookseat[13] = 1;
+                _SeatsButtonObjects[13].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s13.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[13] = 0;
+                _SeatsButtonObjects[13].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s14_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[14] == 0)
+            if (_SeatsButtonObjects[14].BackColor == System.Drawing.Color.Green)
             {
-                s14.BackColor = System.Drawing.Color.Green;
-                tempbookseat[14] = 1;
+                _SeatsButtonObjects[14].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s14.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[14] = 0;
+                _SeatsButtonObjects[14].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s15_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[15] == 0)
+            if (_SeatsButtonObjects[15].BackColor == System.Drawing.Color.Green)
             {
-                s15.BackColor = System.Drawing.Color.Green;
-                tempbookseat[15] = 1;
+                _SeatsButtonObjects[15].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s15.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[15] = 0;
+                _SeatsButtonObjects[15].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s16_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[16] == 0)
+            if (_SeatsButtonObjects[16].BackColor == System.Drawing.Color.Green)
             {
-                s16.BackColor = System.Drawing.Color.Green;
-                tempbookseat[16] = 1;
+                _SeatsButtonObjects[16].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
                 ViewState["Clicks"] = ClicksCount;
                 totalamt();
             }
             else
             {
-                s16.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[16] = 0;
+                _SeatsButtonObjects[16].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s17_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[17] == 0)
+            if (_SeatsButtonObjects[17].BackColor == System.Drawing.Color.Green)
             {
-                s17.BackColor = System.Drawing.Color.Green;
-                tempbookseat[17] = 1;
+                _SeatsButtonObjects[17].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s17.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[17] = 0;
+                _SeatsButtonObjects[17].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s18_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[18] == 0)
+            if (_SeatsButtonObjects[18].BackColor == System.Drawing.Color.Green)
             {
-                s18.BackColor = System.Drawing.Color.Green;
-                tempbookseat[18] = 1;
+                _SeatsButtonObjects[18].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s18.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[18] = 0;
+                _SeatsButtonObjects[18].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s19_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[19] == 0)
+            if (_SeatsButtonObjects[19].BackColor == System.Drawing.Color.Green)
             {
-                s19.BackColor = System.Drawing.Color.Green;
-                tempbookseat[19] = 1;
+                _SeatsButtonObjects[19].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s19.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[19] = 0;
+                _SeatsButtonObjects[19].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s20_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[20] == 0)
+            if (_SeatsButtonObjects[20].BackColor == System.Drawing.Color.Green)
             {
-                s20.BackColor = System.Drawing.Color.Green;
-                tempbookseat[20] = 1;
+                _SeatsButtonObjects[20].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s20.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[20] = 0;
+                _SeatsButtonObjects[20].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s21_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[21] == 0)
+            if (_SeatsButtonObjects[21].BackColor == System.Drawing.Color.Green)
             {
-                s21.BackColor = System.Drawing.Color.Green;
-                tempbookseat[21] = 1;
+                _SeatsButtonObjects[21].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s21.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[21] = 0;
+                _SeatsButtonObjects[21].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s22_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[22] == 0)
+            if (_SeatsButtonObjects[22].BackColor == System.Drawing.Color.Green)
             {
-                s22.BackColor = System.Drawing.Color.Green;
-                tempbookseat[22] = 1;
+                _SeatsButtonObjects[22].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s22.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[22] = 0;
+                _SeatsButtonObjects[22].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s23_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[23] == 0)
+            if (_SeatsButtonObjects[23].BackColor == System.Drawing.Color.Green)
             {
-                s23.BackColor = System.Drawing.Color.Green;
-                tempbookseat[23] = 1;
+                _SeatsButtonObjects[23].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s23.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[23] = 0;
+                _SeatsButtonObjects[23].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s24_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[24] == 0)
+            if (_SeatsButtonObjects[24].BackColor == System.Drawing.Color.Green)
             {
-                s24.BackColor = System.Drawing.Color.Green;
-                tempbookseat[24] = 1;
+                _SeatsButtonObjects[24].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s24.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[24] = 0;
+                _SeatsButtonObjects[24].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s25_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[25] == 0)
+            if (_SeatsButtonObjects[25].BackColor == System.Drawing.Color.Green)
             {
-                s25.BackColor = System.Drawing.Color.Green;
-                tempbookseat[25] = 1;
+                _SeatsButtonObjects[25].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s25.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[25] = 0;
+                _SeatsButtonObjects[25].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s26_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[26] == 0)
+            if (_SeatsButtonObjects[26].BackColor == System.Drawing.Color.Green)
             {
-                s26.BackColor = System.Drawing.Color.Green;
-                tempbookseat[26] = 1;
+                _SeatsButtonObjects[26].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s26.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[26] = 0;
+                _SeatsButtonObjects[26].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s27_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[27] == 0)
+            if (_SeatsButtonObjects[27].BackColor == System.Drawing.Color.Green)
             {
-                s27.BackColor = System.Drawing.Color.Green;
-                tempbookseat[27] = 1;
+                _SeatsButtonObjects[27].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s27.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[27] = 0;
+                _SeatsButtonObjects[27].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s28_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[28] == 0)
+            if (_SeatsButtonObjects[28].BackColor == System.Drawing.Color.Green)
             {
-                s28.BackColor = System.Drawing.Color.Green;
-                tempbookseat[28] = 1;
+                _SeatsButtonObjects[28].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s28.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[28] = 0;
+                _SeatsButtonObjects[28].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s29_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[29] == 0)
+            if (_SeatsButtonObjects[29].BackColor == System.Drawing.Color.Green)
             {
-                s29.BackColor = System.Drawing.Color.Green;
-                tempbookseat[29] = 1;
+                _SeatsButtonObjects[29].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s29.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[29] = 0;
+                _SeatsButtonObjects[29].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
-
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         protected void s30_Click(object sender, EventArgs e)
         {
-            if (tempbookseat[30] == 0)
+            if (_SeatsButtonObjects[30].BackColor == System.Drawing.Color.Green)
             {
-                s30.BackColor = System.Drawing.Color.Green;
-                tempbookseat[30] = 1;
+                _SeatsButtonObjects[30].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
             else
             {
-                s30.BackColor = System.Drawing.Color.Gray;
-                tempbookseat[30] = 0;
+                _SeatsButtonObjects[30].BackColor = System.Drawing.Color.Green;
                 ClicksCount = (int)ViewState["Clicks"] - 1;
-                ViewState["Clicks"] = ClicksCount;
-                totalamt();
             }
+            ViewState["Clicks"] = ClicksCount;
+            totalamt();
         }
 
         #endregion

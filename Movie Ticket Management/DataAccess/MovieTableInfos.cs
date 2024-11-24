@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Movie_Ticket_Management.DataAccess
 {
+    [Serializable]
     public class MovieTableInfos
     {
         public Int64 MovieID { get; set; }
@@ -78,7 +79,8 @@ namespace Movie_Ticket_Management.DataAccess
         public const int ImageSize = 10;
         public const int ImageData = 11;
     }
-    public class MovieSeatSatus
+    [Serializable]
+    public class MovieSeatStatus
     {
         public Int64 SeatStatusID { get; set; }
         public Int64 MovieID { get; set; }
