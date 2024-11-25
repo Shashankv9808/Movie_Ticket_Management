@@ -312,13 +312,13 @@ namespace Movie_Ticket_Management
         protected global::System.Web.UI.WebControls.Label totaltxt;
 
         /// <summary>
-        /// bookbtn control.
+        /// btnBookSeats control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button bookbtn;
+        protected global::System.Web.UI.WebControls.Button btnBookSeats;
 
         /// <summary>
         /// Label9 control.

@@ -338,11 +338,42 @@
             position: absolute;
         }
         .movieseatsdiv{
-            top: 396px;
-            left: 900px;
-            width:auto;
-            height:auto;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top:396px;
         }
+        .seatwrap {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seat {
+            width: 50px;
+            height: 50px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+        }
+
+            .seat:hover {
+                background-color: #2EE59D;
+                box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+                color: #fff;
+                transform: translateY(-7px);
+            }
     </style>
 </head>
  <body style="width: 102%" >
@@ -400,6 +431,7 @@
         </div>
         <div class="movieinfodiv">
             <div style="float: left">
+
                 <asp:Label ID="Label10" runat="server" Font-Names="Blackadder ITC" Font-Size="X-Large" ForeColor="White" Text="Duration:"></asp:Label><br />
                 <asp:Label ID="Label11" runat="server" Font-Names="Blackadder ITC" Font-Size="XX-Large" ForeColor="White" Text="Cost:"></asp:Label><br />
                 <br />
@@ -441,7 +473,7 @@
             <br />
             <br />
             <br />
-            <asp:Button ID="bookbtn" CssClass="button" runat="server" Style="height: 40px; width: 218px" Text="Book Tickets" OnClick="Button1_Click" BackColor="#0078FF" ForeColor="White" Enabled="False" />
+            <asp:Button ID="btnBookSeats" CssClass="button" runat="server" Style="height: 40px; width: 218px" Text="Book Tickets" OnClick="BookSeats_Click" BackColor="#0078FF" ForeColor="White" Enabled="False" />
 
 
 
@@ -472,14 +504,12 @@
             <br />
             <asp:Label ID="Languagelabel" runat="server" Font-Italic="True" Font-Names="Bahnschrift SemiLight Condensed" ForeColor="White" Font-Bold="True" Font-Size="X-Large"></asp:Label>
         </div>
-
-
         <div class="movieseatsdiv">
             <asp:PlaceHolder ID="phSeatDraw" runat="server" Visible="true">
                 <asp:Label ID="lblSeatSelectionError" runat="server" ForeColor="Red" Text="*Please select one seat atleast" Visible="False"></asp:Label><br />
                 <br />
 
-                <table class="auto-style1" style="background-color: transparent">
+                <table style="background-color: transparent">
                     <tr>
                         <td class="auto-style5">
                             <asp:Button ID="s1" CssClass="seat" runat="server" BackColor="#999999" Text="01" OnClick="s1_Click" />
@@ -510,7 +540,7 @@
                         </td>
                         <td class="auto-style4">&nbsp;</td>
                         <td class="auto-style5">
-                            <asp:Button ID="s9" runat="server" BackColor="#999999" CssClass="auto-style6,seat" Text="09" OnClick="s9_Click" />
+                            <asp:Button ID="s9" CssClass="seat" runat="server" BackColor="#999999"  Text="09" OnClick="s9_Click" />
                         </td>
                         <td class="auto-style11">
                             <asp:Button ID="s10" CssClass="seat" runat="server" BackColor="#999999" Text="10" OnClick="s10_Click" />

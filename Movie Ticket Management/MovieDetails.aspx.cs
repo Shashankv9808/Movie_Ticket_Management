@@ -460,7 +460,7 @@ namespace Movie_Ticket_Management
                 }
             }
         }
-        private void totalamt()
+        private void Totalamt()
         {
             int click = (int)ViewState["Clicks"];
             totalamts = click * costofmovie;
@@ -505,54 +505,29 @@ namespace Movie_Ticket_Management
         {
             Response.Redirect("HomePage.aspx");
         }
-        protected void Button1_Click(object sender, EventArgs e)//book button
+        protected void BookSeats_Click(object sender, EventArgs e)
         {
-            //int i, ccs = 0;
-            //if (ccs > 0)//checking seat is selected or not
-            //{
-            //    if (Session["user"] != null)//checking login or not
-            //    {
-            //        if (Session["pay"].ToString() == "yes")
-            //        {
-            //            for (i = 0; i <= 30; i++)
-            //            {
-            //                if (tempbookseat[i] == 1)
-            //                {
-            //                    numofseats += 1;
-            //                    string f = "s" + i.ToString();
-            //                    string kk = Session["moviename"].ToString();
-            //                    String updatedata = "Update SeatStatus set " + f + " ='B' where name='" + kk + "'";
-            //                    SqlCommand cmd = new SqlCommand(updatedata, con);
-            //                    con.Open();
-            //                    cmd.ExecuteNonQuery();
-            //                    con.Close();
-            //                    // Session["pay"] = "no";
-            //                }
-            //            }
-            //            Response.Write("<script>alert('" + totalamts + "')</script>");
-            //            string user = Session["user"].ToString();
-            //            SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
-            //            con.Open();
-            //            hist.ExecuteNonQuery();
-            //            con.Close();
-            //            Session["tempbooking"] = tempbookseat;
-            //            Response.Redirect("booked.aspx?#modal");
-            //        }
-            //        else
-            //        {
+            if (Session["user"] != null)//checking login or not
+            {
+                //yet to update to database all the information.
+                String updatedata = "Update MovieSeatStatus set " + f + " ='B' where name='" + kk + "'";
+                SqlCommand cmd = new SqlCommand(updatedata, con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                Response.Write("<script>alert('" + totalamts + "')</script>");
+                string user = Session["user"].ToString();
+                SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
+                con.Open();
+                hist.ExecuteNonQuery();
+                con.Close();
+                Response.Redirect("booked.aspx?#modal");
+            }
+            else
+            {
+                Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
+            }
 
-            //            Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modals';</script>");//payment popup
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Response.Write("<script>window.location.href='MovieDetails.aspx?param=" + Session["moviename"].ToString() + "?#modal';</script>");//login popup
-            //    }
-            //}
-            //else
-            //{
-            //    Label14.Visible = true;
-            //}
         }
         protected void log_Click(object sender, EventArgs e)
         {
@@ -661,7 +636,7 @@ namespace Movie_Ticket_Management
         }
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bookbtn.Enabled = false;
+            btnBookSeats.Enabled = false;
             if (ddl_movie_date.SelectedItem.ToString() == "Choose Date")
             {
                 ddl_movie_time.Enabled = false;
@@ -702,7 +677,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s2_Click(object sender, EventArgs e)
@@ -719,7 +694,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s3_Click(object sender, EventArgs e)
@@ -735,7 +710,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s4_Click(object sender, EventArgs e)
@@ -751,7 +726,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s5_Click(object sender, EventArgs e)
@@ -782,7 +757,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s7_Click(object sender, EventArgs e)
@@ -798,7 +773,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s8_Click(object sender, EventArgs e)
@@ -814,7 +789,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s9_Click(object sender, EventArgs e)
@@ -830,7 +805,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s10_Click(object sender, EventArgs e)
@@ -847,7 +822,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s11_Click(object sender, EventArgs e)
@@ -863,7 +838,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s12_Click(object sender, EventArgs e)
@@ -879,7 +854,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s13_Click(object sender, EventArgs e)
@@ -895,7 +870,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s14_Click(object sender, EventArgs e)
@@ -911,7 +886,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s15_Click(object sender, EventArgs e)
@@ -927,7 +902,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s16_Click(object sender, EventArgs e)
@@ -937,7 +912,7 @@ namespace Movie_Ticket_Management
                 _SeatsButtonObjects[16].BackColor = System.Drawing.Color.Yellow;
                 ClicksCount = (int)ViewState["Clicks"] + 1;
                 ViewState["Clicks"] = ClicksCount;
-                totalamt();
+                Totalamt();
             }
             else
             {
@@ -945,7 +920,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s17_Click(object sender, EventArgs e)
@@ -961,7 +936,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s18_Click(object sender, EventArgs e)
@@ -977,7 +952,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s19_Click(object sender, EventArgs e)
@@ -993,7 +968,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s20_Click(object sender, EventArgs e)
@@ -1009,7 +984,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s21_Click(object sender, EventArgs e)
@@ -1025,7 +1000,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s22_Click(object sender, EventArgs e)
@@ -1041,7 +1016,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s23_Click(object sender, EventArgs e)
@@ -1057,7 +1032,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s24_Click(object sender, EventArgs e)
@@ -1073,7 +1048,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s25_Click(object sender, EventArgs e)
@@ -1089,7 +1064,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s26_Click(object sender, EventArgs e)
@@ -1105,7 +1080,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s27_Click(object sender, EventArgs e)
@@ -1121,7 +1096,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s28_Click(object sender, EventArgs e)
@@ -1137,7 +1112,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s29_Click(object sender, EventArgs e)
@@ -1153,7 +1128,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         protected void s30_Click(object sender, EventArgs e)
@@ -1169,7 +1144,7 @@ namespace Movie_Ticket_Management
                 ClicksCount = (int)ViewState["Clicks"] - 1;
             }
             ViewState["Clicks"] = ClicksCount;
-            totalamt();
+            Totalamt();
         }
 
         #endregion
