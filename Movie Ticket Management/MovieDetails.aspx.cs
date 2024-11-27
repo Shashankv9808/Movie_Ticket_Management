@@ -465,6 +465,7 @@ namespace Movie_Ticket_Management
             int click = (int)ViewState["Clicks"];
             totalamts = click * costofmovie;
             totaltxt.Text = totalamts.ToString();
+            btnBookSeats.Enabled = click > 0;
         }
         protected void signinbtn_Click(object sender, EventArgs e)
         {
@@ -510,17 +511,7 @@ namespace Movie_Ticket_Management
             if (Session["user"] != null)//checking login or not
             {
                 //yet to update to database all the information.
-                String updatedata = "Update MovieSeatStatus set " + f + " ='B' where name='" + kk + "'";
-                SqlCommand cmd = new SqlCommand(updatedata, con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                Response.Write("<script>alert('" + totalamts + "')</script>");
-                string user = Session["user"].ToString();
-                SqlCommand hist = new SqlCommand("insert into bookedinfo values('" + user + "','" + totaltxt.Text + "','" + numofseats + "','" + Session["moviename"].ToString() + "')", con);
-                con.Open();
-                hist.ExecuteNonQuery();
-                con.Close();
+                
                 Response.Redirect("booked.aspx?#modal");
             }
             else
