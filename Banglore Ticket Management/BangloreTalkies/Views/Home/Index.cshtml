@@ -1,0 +1,271 @@
+﻿@model BangloreTalkies.Models.HomePageViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Discover amazing events, movies & experiences</h1>
+            <p class="hero-subtitle">Find the best entertainment options near you</p>
+        </div>
+    </div>
+</section>
+
+<!-- Top Kannada Movies Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Top movies near you</h2>
+            <a asp-area="" asp-controller="Home" asp-action="Movies" class="section-link">View All</a>
+        </div>
+
+        <div class="content-grid">
+            @foreach (var movie in Model.FeaturedMovies.Take(4))
+            {
+                <div class="content-card movie-card" data-id="@movie.Id">
+                    <div class="card-image">
+                        <img src="@movie.ImageUrl" alt="@movie.Title" loading="lazy" />
+                        <div class="card-overlay">
+                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movie">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">@movie.Title</h3>
+                        <div class="card-meta">
+                            <span class="card-rating">@movie.Rating</span>
+                            <span class="card-separator">|</span>
+                            <span class="card-language">@movie.Language</span>
+                        </div>
+                        <div class="card-price">@movie.Price</div>
+                        @if (!string.IsNullOrEmpty(movie.Status))
+                        {
+                            <div class="card-status">@movie.Status</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Offers on Activities Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Offers on Activities</h2>
+            <a href="@Url.Action("Activities", "Home")" class="section-link">View All</a>
+        </div>
+
+        <div class="content-grid">
+            @foreach (var activity in Model.Activities.Take(4))
+            {
+                <div class="content-card activity-card" data-id="@activity.Id">
+                    <div class="card-image">
+                        <img src="@activity.ImageUrl" alt="@activity.Title" loading="lazy" />
+                        @if (!string.IsNullOrEmpty(activity.Offer))
+                        {
+                            <div class="card-badge offer-badge">@activity.Offer</div>
+                        }
+                        <div class="card-overlay">
+                            <button class="like-btn @(activity.IsLiked ? "liked" : "")" data-id="@activity.Id" data-type="activity">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">@activity.Title</h3>
+                        <div class="card-meta">
+                            <span class="card-time">@activity.Time</span>
+                        </div>
+                        <div class="card-location">
+                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0a6 6 0 0 0-6 6c0 3.314 5.362 9.579 5.538 9.828.099.14.259.172.462.172s.363-.032.462-.172C8.638 15.579 14 9.314 14 6a6 6 0 0 0-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                            </svg>
+                            @activity.Location
+                        </div>
+                        <div class="card-price">@activity.Price</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Discover Music Events Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Discover the best of Music Events</h2>
+            <a href="@Url.Action("Events", "Home")" class="section-link">View All</a>
+        </div>
+
+        <div class="content-grid">
+            @foreach (var eventItem in Model.UpcomingEvents.Take(4))
+            {
+                <div class="content-card event-card" data-id="@eventItem.Id">
+                    <div class="card-image">
+                        <img src="@eventItem.ImageUrl" alt="@eventItem.Title" loading="lazy" />
+                        <div class="card-overlay">
+                            <button class="like-btn @(eventItem.IsLiked ? "liked" : "")" data-id="@eventItem.Id" data-type="event">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">@eventItem.Title</h3>
+                        <div class="card-meta">
+                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2v1h12V2H2zm0 2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V4H2z" />
+                            </svg>
+                            <span class="card-date">@eventItem.Date</span>
+                        </div>
+                        <div class="card-venue">
+                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0a6 6 0 0 0-6 6c0 3.314 5.362 9.579 5.538 9.828.099.14.259.172.462.172s.363-.032.462-.172C8.638 15.579 14 9.314 14 6a6 6 0 0 0-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                            </svg>
+                            @eventItem.Venue
+                        </div>
+                        <div class="card-price">@eventItem.Price</div>
+                        @if (!string.IsNullOrEmpty(eventItem.Category))
+                        {
+                            <div class="card-category">@eventItem.Category</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Best of English Movies Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Best of English movies</h2>
+            <a href="@Url.Action("Movies", "Home")" class="section-link">View All</a>
+        </div>
+
+        <div class="content-grid">
+            @foreach (var movie in Model.EnglishMovies.Take(4))
+            {
+                <div class="content-card movie-card" data-id="@movie.Id">
+                    <div class="card-image">
+                        <img src="@movie.ImageUrl" alt="@movie.Title" loading="lazy" />
+                        <div class="card-overlay">
+                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movie">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">@movie.Title</h3>
+                        <div class="card-meta">
+                            <span class="card-rating">@movie.Rating</span>
+                            <span class="card-separator">|</span>
+                            <span class="card-language">@movie.Language</span>
+                        </div>
+                        <div class="card-price">@movie.Price</div>
+                        @if (!string.IsNullOrEmpty(movie.Status))
+                        {
+                            <div class="card-status">@movie.Status</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Explore Categories</h2>
+        <div class="categories-grid">
+            <a href="@Url.Action("Movies", "Home")" class="category-card">
+                <div class="category-icon">🎬</div>
+                <h3 class="category-title">Movies</h3>
+                <p class="category-description">Latest releases and classics</p>
+            </a>
+            <a href="@Url.Action("Events", "Home")" class="category-card">
+                <div class="category-icon">🎵</div>
+                <h3 class="category-title">Events</h3>
+                <p class="category-description">Concerts and live shows</p>
+            </a>
+            <a href="@Url.Action("Activities", "Home")" class="category-card">
+                <div class="category-icon">🎯</div>
+                <h3 class="category-title">Activities</h3>
+                <p class="category-description">Fun experiences for everyone</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Initialize homepage functionality
+        $(document).ready(function() {
+            // Handle like button clicks
+            $('.like-btn').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const $btn = $(this);
+                const id = $btn.data('id');
+                const type = $btn.data('type');
+
+                // Toggle liked state
+                $btn.toggleClass('liked');
+
+                // Here you would typically make an AJAX call to save the like state
+                // $.post('/api/like', { id: id, type: type, liked: $btn.hasClass('liked') });
+
+                // Visual feedback
+                if ($btn.hasClass('liked')) {
+                    $btn.addClass('pulse');
+                    setTimeout(() => $btn.removeClass('pulse'), 300);
+                }
+            });
+
+            // Handle card clicks for navigation
+            $('.content-card').on('click', function() {
+                const id = $(this).data('id');
+                const type = $(this).hasClass('movie-card') ? 'movie' :
+                            $(this).hasClass('event-card') ? 'event' : 'activity';
+
+                // Navigate to detail page
+                // window.location.href = `/details/${type}/${id}`;
+                console.log(`Navigating to ${type} with id: ${id}`);
+            });
+
+            // Lazy loading for images
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src || img.src;
+                            img.classList.remove('loading');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        });
+    </script>
+}

@@ -1,28 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs/Movie_Ticket_Management/v17
-/Movie Ticket Management/.vs/Movie Ticket Management
-/Movie Ticket Management/Movie Ticket Management/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-/Movie Ticket Management/Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.AssemblyReference.cache
-/.vs
-/Movie Ticket Management/.vs
+/Banglore Ticket Management/.vs
+/Banglore Ticket Management/BangloreTalkies/bin
+/Banglore Ticket Management/BangloreTalkies/obj
+/Legacy Movie Ticket Management/packages
+/Movie Ticket Management/bin
 /Movie Ticket Management/bin
 /Movie Ticket Management/obj
-Movie Ticket Management/obj/Debug/Movie Ticket Management.dll
-Movie Ticket Management/obj/Debug/Movie Ticket Management.pdb
-Movie Ticket Management/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.AssemblyReference.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.CoreCompileInputs.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.FileListAbsolute.txt
-Movie Ticket Management/bin/Movie Ticket Management.dll
-Movie Ticket Management/bin/Movie Ticket Management.pdb
-Movie Ticket Management/bin/Movie Ticket Management.dll
-Movie Ticket Management/bin/Movie Ticket Management.pdb
-Movie Ticket Management/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.AssemblyReference.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.CoreCompileInputs.cache
-Movie Ticket Management/obj/Debug/Movie Ticket Management.csproj.FileListAbsolute.txt
-Movie Ticket Management/obj/Debug/Movie Ticket Management.dll
-Movie Ticket Management/obj/Debug/Movie Ticket Management.pdb
+/packages

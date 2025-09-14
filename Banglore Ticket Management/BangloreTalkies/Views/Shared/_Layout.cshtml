@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme = "light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BangloreTalkies</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="header sticky-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" class="logo" height="50px" width="50px" alt="Banglore Talkies" />
+                </a>
+
+                <!-- Navigation Links (Desktop) -->
+                <div class="navbar-nav d-none d-lg-flex mx-auto">
+                    <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">For you</a>
+                    <a class="nav-link" href="#">Events</a>
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Movies">Movies</a>
+                    <a class="nav-link" href="#">Activities</a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="navbar-actions d-flex align-items-center">
+                    <!-- Search -->
+                    <div class="search-container d-none d-md-block">
+                        <form class="search-form" action="@Url.Action("Search", "Home")" method="get">
+                            <input type="text" name="query" class="search-input" placeholder="Search events, movies, restaurants..." />
+                            <button type="submit" class="search-btn">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Location Selector -->
+                    <div class="location-selector d-none d-lg-block">
+                        <select class="form-select location-select">
+                            <option value="bangalore">Bangalore</option>
+                            <option value="delhi">Delhi/NCR</option>
+                            <option value="mumbai">Mumbai</option>
+                            <option value="hyderabad">Hyderabad</option>
+                            <option value="pune">Pune</option>
+                            <option value="chennai">Chennai</option>
+                        </select>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle btn" id="themeToggle" aria-label="Toggle theme">
+                        <span class="theme-toggle__icon">🌙</span>
+                    </button>
+
+                    <!-- User Avatar -->
+                    <div class="user-avatar">
+                        <div class="avatar-circle">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && !string.IsNullOrEmpty(User.Identity.Name))
+                            {
+                                <span>@User.Identity.Name![0].ToString().ToUpper()</span>
+                            }
+                            else
+                            {
+                                <span>
+                                    <img src="~/images/user-avatar.png" height="40px" width="40px" />
+                                </span>
+                            }
+                        </div>
+                    </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-title">Banglore Talkies</h5>
+                    <p class="footer-text">Your gateway to the best events, movies, and experiences in the city.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-subtitle">Company</h6>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">About Us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Careers</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Press</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-subtitle">Support</h6>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Help Center</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Contact Us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Safety</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Accessibility</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-subtitle">Legal</h6>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Terms & Conditions</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Cookie Policy</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Content Guidelines</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-12 mb-4">
+                    <h6 class="footer-subtitle">Download Our App</h6>
+                    <p class="footer-text">Get the best experience on mobile</p>
+                    <div class="app-buttons">
+                        <a href="#" class="app-button">
+                            <img src="~/images/appstore.png" alt="Download on App Store" />
+                        </a>
+                        <a href="#" class="app-button">
+                            <img src="~/images/googleplay.png" alt="Get it on Google Play" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="copyright">© 2025 Banglore Talkies. All rights reserved.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">
+                            <img width="20" height="20" src="~/images/fb.png" />
+                            </a>
+                        <a href="#" aria-label="X">
+                            <img width="20" height="20" src="~/images/X.png" />
+                            </a>
+                        <a href="#" aria-label="Instagram">
+                            <img width="20" height="20" src="~/images/insta.png" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/district-app.js" asp-append-version="true"></script>
+    <script src="~/js/district-movie-swiper.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+	@await RenderSectionAsync("Styles", required: false)
+</body>
+</html>
