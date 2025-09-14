@@ -28,7 +28,7 @@
                     <div class="card-image">
                         <img src="@movie.ImageUrl" alt="@movie.Title" loading="lazy" />
                         <div class="card-overlay">
-                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movie">
+                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movies">
                                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                                     <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                 </svg>
@@ -162,7 +162,7 @@
                     <div class="card-image">
                         <img src="@movie.ImageUrl" alt="@movie.Title" loading="lazy" />
                         <div class="card-overlay">
-                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movie">
+                            <button class="like-btn @(movie.IsLiked ? "liked" : "")" data-id="@movie.Id" data-type="movies">
                                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                                     <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                 </svg>
@@ -198,12 +198,12 @@
                 <h3 class="category-title">Movies</h3>
                 <p class="category-description">Latest releases and classics</p>
             </a>
-            <a href="@Url.Action("Events", "Home")" class="category-card">
+            <a href="@Url.Action("Index", "Events")" class="category-card">
                 <div class="category-icon">🎵</div>
                 <h3 class="category-title">Events</h3>
                 <p class="category-description">Concerts and live shows</p>
             </a>
-            <a href="@Url.Action("Activities", "Home")" class="category-card">
+            <a href="@Url.Action("Index", "Activities")" class="category-card">
                 <div class="category-icon">🎯</div>
                 <h3 class="category-title">Activities</h3>
                 <p class="category-description">Fun experiences for everyone</p>
@@ -228,7 +228,7 @@
                 // Toggle liked state
                 $btn.toggleClass('liked');
 
-                // Here you would typically make an AJAX call to save the like state
+                // TODO: Typically make an AJAX call to save the like state.
                 // $.post('/api/like', { id: id, type: type, liked: $btn.hasClass('liked') });
 
                 // Visual feedback
@@ -238,14 +238,14 @@
                 }
             });
 
-            // Handle card clicks for navigation
+            // TODO: Handle card clicks for navigation
             $('.content-card').on('click', function() {
                 const id = $(this).data('id');
                 const type = $(this).hasClass('movie-card') ? 'movie' :
                             $(this).hasClass('event-card') ? 'event' : 'activity';
 
                 // Navigate to detail page
-                // window.location.href = `/details/${type}/${id}`;
+                // window.location.href = `/${type}/${id}`;
                 console.log(`Navigating to ${type} with id: ${id}`);
             });
 

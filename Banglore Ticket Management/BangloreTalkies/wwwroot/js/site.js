@@ -1,130 +1,7 @@
-﻿// Sample data
-const sampleData = {
-    movies: [
-        {
-            title: "Param Sundari",
-            rating: "UA13+",
-            language: "Hindi",
-            price: "₹299 onwards",
-            status: "Premiering this week"
-        },
-        {
-            title: "Vash Level 2",
-            rating: "A",
-            language: "Hindi",
-            price: "₹249 onwards",
-            status: "New Release"
-        },
-        {
-            title: "Mahavatar Narsimha",
-            rating: "UA13+",
-            language: "Hindi",
-            price: "₹199 onwards",
-            status: "Now Showing"
-        },
-        {
-            title: "War 2",
-            rating: "UA16+",
-            language: "Hindi",
-            price: "₹399 onwards",
-            status: "Upcoming"
-        }
-    ],
-    englishMovies: [
-        {
-            title: "Avengers: Endgame",
-            rating: "UA13+",
-            language: "English",
-            price: "₹350 onwards",
-            status: "Now Showing"
-        },
-        {
-            title: "The Batman",
-            rating: "UA16+",
-            language: "English",
-            price: "₹400 onwards",
-            status: "New Release"
-        },
-        {
-            title: "Spider-Man: No Way Home",
-            rating: "UA13+",
-            language: "English",
-            price: "₹320 onwards",
-            status: "Now Showing"
-        },
-        {
-            title: "Top Gun: Maverick",
-            rating: "UA16+",
-            language: "English",
-            price: "₹380 onwards",
-            status: "Upcoming"
-        }
-    ],
-    events: [
-        {
-            title: "Zamna India | Gurugram",
-            date: "Sat, 29 Nov, 5:00 PM",
-            venue: "Venue to be announced, Gurugram",
-            price: "₹3000 onwards",
-            category: "Music"
-        },
-        {
-            title: "Rolling Loud India",
-            date: "22 Nov - 23 Nov, 3PM",
-            venue: "Loud Park, Kharghar, Mumbai",
-            price: "₹6000 onwards",
-            category: "Music Festival"
-        },
-        {
-            title: "Sunburn Arena ft. Martin Garrix",
-            date: "15 Dec, 8:00 PM",
-            venue: "DLF CyberHub, Gurugram",
-            price: "₹4500 onwards",
-            category: "Electronic"
-        },
-        {
-            title: "NH7 Weekender",
-            date: "3 Dec - 4 Dec, 4:00 PM",
-            venue: "Parade Grounds, Pune",
-            price: "₹2500 onwards",
-            category: "Multi-Genre"
-        }
-    ],
-    activities: [
-        {
-            title: "Chokhi Dhani | Sonipat",
-            offer: "50% off up to ₹300",
-            time: "Daily, 6:00 PM onwards",
-            location: "Chokhi Dhani Sonipat, Haryana",
-            price: "₹700 onwards"
-        },
-        {
-            title: "Splash Water World | Rohtak",
-            offer: "50% off up to ₹300",
-            time: "Every Sun, Fri & Sat, 10:00 AM to 6:00 PM",
-            location: "Splash Water World, Rohtak",
-            price: "₹600 onwards"
-        },
-        {
-            title: "Adventure Island | Delhi",
-            offer: "40% off up to ₹250",
-            time: "Daily, 10:00 AM to 8:00 PM",
-            location: "Adventure Island, Rohini, Delhi",
-            price: "₹850 onwards"
-        },
-        {
-            title: "Snow World | Gurgaon",
-            offer: "30% off up to ₹200",
-            time: "Daily, 11:00 AM to 9:00 PM",
-            location: "DLF Mall of India, Noida",
-            price: "₹500 onwards"
-        }
-    ]
-};
-
+﻿
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('District app initializing...');
+    console.log('App initializing...');
 
     // Initialize theme management
     initializeTheme();
@@ -141,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize interactions
     initializeInteractions();
 
-    console.log('District app initialized successfully');
+    console.log('App initialized successfully');
 });
 
 // Theme Management
@@ -154,7 +31,7 @@ function initializeTheme() {
     }
 
     // Get stored theme or use system preference
-    let currentTheme = localStorage.getItem('district-theme');
+    let currentTheme = localStorage.getItem('theme');
     if (!currentTheme) {
         currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -175,7 +52,7 @@ function initializeTheme() {
     function applyTheme(theme) {
         console.log('Applying theme:', theme);
         document.documentElement.setAttribute('data-color-scheme', theme);
-        localStorage.setItem('district-theme', theme);
+        localStorage.setItem('theme', theme);
 
         // Update icon
         const icon = themeToggle.querySelector('.theme-toggle__icon');
@@ -393,12 +270,12 @@ function toggleLike(itemId, buttonElement) {
     }
 
     // Save to localStorage
-    localStorage.setItem('district-liked-items', JSON.stringify(likedItems));
+    localStorage.setItem('liked-items', JSON.stringify(likedItems));
     console.log('Like toggled for:', itemId, 'Now liked:', !isCurrentlyLiked);
 }
 
 function getLikedItems() {
-    const stored = localStorage.getItem('district-liked-items');
+    const stored = localStorage.getItem('liked-items');
     return stored ? JSON.parse(stored) : [];
 }
 

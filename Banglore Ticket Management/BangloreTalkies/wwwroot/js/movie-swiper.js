@@ -1,11 +1,11 @@
-// District Movies Hero Swiper JavaScript
-class DistrictMovieSwiper {
+// Movies Hero Swiper JavaScript
+class MovieSwiper {
     constructor(containerId, options = {}) {
         this.containerId = containerId;
         this.container = document.getElementById(containerId);
         
         if (!this.container) {
-            console.error(`District Movie Swiper: Container '${containerId}' not found`);
+            console.error(`Movie Swiper: Container '${containerId}' not found`);
             return;
         }
         
@@ -39,7 +39,7 @@ class DistrictMovieSwiper {
         this.setupEventListeners();
         this.startProgressAnimation();
         
-        console.log('District Movie Swiper initialized successfully');
+        console.log('Movie Swiper initialized successfully');
     }
     
     setupBackgroundSlides() {
@@ -79,18 +79,18 @@ class DistrictMovieSwiper {
             
             // Navigation arrows
             navigation: {
-                nextEl: `#${this.containerId} .district-swiper-next`,
-                prevEl: `#${this.containerId} .district-swiper-prev`,
+                nextEl: `#${this.containerId} .swiper-next`,
+                prevEl: `#${this.containerId} .swiper-prev`,
                 disabledClass: 'swiper-button-disabled'
             },
             
             // Pagination
-            pagination: {
-                el: `#${this.containerId} .district-pagination`,
-                clickable: true,
-                bulletClass: 'swiper-pagination-bullet',
-                bulletActiveClass: 'swiper-pagination-bullet-active'
-            },
+            //pagination: {
+            //    el: `#${this.containerId} .pagination`,
+            //    clickable: true,
+            //    bulletClass: 'swiper-pagination-bullet',
+            //    bulletActiveClass: 'swiper-pagination-bullet-active'
+            //},
             
             // Keyboard control
             keyboard: this.options.keyboard ? {
@@ -381,17 +381,17 @@ class DistrictMovieSwiper {
         button.disabled = true;
         
         // Save notification preference
-        const notifications = JSON.parse(localStorage.getItem('district-movie-notifications') || '[]');
+        const notifications = JSON.parse(localStorage.getItem('movie-notifications') || '[]');
         if (!notifications.includes(movieId)) {
             notifications.push(movieId);
-            localStorage.setItem('district-movie-notifications', JSON.stringify(notifications));
+            localStorage.setItem('movie-notifications', JSON.stringify(notifications));
         }
         
         this.dispatchEvent('notifyMe', { movieId: movieId });
     }
     
     dispatchEvent(eventName, detail) {
-        const event = new CustomEvent(`districtSwiper:${eventName}`, {
+        const event = new CustomEvent(`Swiper:${eventName}`, {
             detail: detail,
             bubbles: true
         });
@@ -434,7 +434,7 @@ class DistrictMovieSwiper {
     destroy() {
         this.stopProgressAnimation();
         this.swiper?.destroy(true, true);
-        console.log('District Movie Swiper destroyed');
+        console.log('Movie Swiper destroyed');
     }
     
     getCurrentSlide() {
@@ -451,8 +451,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const swiperElement = document.getElementById('moviesHeroSwiper');
     
     if (swiperElement) {
-        // Initialize the District Movie Swiper
-        window.districtMovieSwiper = new DistrictMovieSwiper('moviesHeroSwiper', {
+        // Initialize the Movie Swiper
+        window.MovieSwiper = new MovieSwiper('moviesHeroSwiper', {
             autoplay: true,
             autoplayDelay: 7000,
             loop: true,
@@ -463,26 +463,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Listen for custom events
-        swiperElement.addEventListener('districtSwiper:slideChange', function(e) {
+        swiperElement.addEventListener('Swiper:slideChange', function(e) {
             console.log('Slide changed:', e.detail);
         });
         
-        swiperElement.addEventListener('districtSwiper:bookNow', function(e) {
+        swiperElement.addEventListener('Swiper:bookNow', function(e) {
             console.log('Book now clicked for movie:', e.detail.movieId);
         });
         
-        swiperElement.addEventListener('districtSwiper:notifyMe', function(e) {
+        swiperElement.addEventListener('Swiper:notifyMe', function(e) {
             console.log('Notify me clicked for movie:', e.detail.movieId);
         });
     }
 });
 
 // Utility function for manual initialization
-window.initDistrictMovieSwiper = function(containerId, options = {}) {
-    return new DistrictMovieSwiper(containerId, options);
+window.initMovieSwiper = function(containerId, options = {}) {
+    return new MovieSwiper(containerId, options);
 };
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DistrictMovieSwiper;
+    module.exports = MovieSwiper;
 }
