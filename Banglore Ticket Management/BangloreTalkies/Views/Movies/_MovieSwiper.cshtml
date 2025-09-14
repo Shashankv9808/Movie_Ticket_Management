@@ -1,0 +1,114 @@
+@model List<BangloreTalkies.Models.MovieItem>
+
+<!-- Movies Hero Swiper Component -->
+<section class="hero-swiper">
+    <div class="swiper-container" id="moviesHeroSwiper">
+        <!-- Background Slides -->
+        <div class="swiper-backgrounds">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="dds-absolute dds-inset-0 dds-w-full dds-h-full dds-z-0" style="background:linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,50%) 0%, #fff 60%)" aria-hidden="true"></div>
+                <div class="swiper-bg-slide @(i == 0 ? "active" : "")" 
+                     data-bg="@Model[i].ImageUrl" 
+                     data-slide="@i">
+                </div>
+
+            }
+        </div>
+
+        <!-- Main Swiper -->
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var movie = Model[i];
+                    <div class="swiper-slide">
+                        <div class="slide-container">
+                            <div class="slide-content">
+                                <!-- Movie Details Section -->
+                                <div class="movie-details-section">
+                                    <div class="movie-meta-info">
+                                        <h1 class="movie-title">@movie.Title</h1>
+                                        
+                                        <div class="movie-meta">
+                                            <span class="rating-badge">@movie.Rating</span>
+                                            <span class="separator">|</span>
+                                            <span class="genre-info">
+                                                @movie.Genre
+                                                @if (!string.IsNullOrEmpty(movie.Language) && movie.Language != "English")
+                                                {
+                                                    <span>, @movie.Language</span>
+                                                }
+                                                @if (movie.Formats != null && movie.Formats.Count > 0)
+                                                {
+                                                    <span> +@movie.Formats.Count more</span>
+                                                }
+                                            </span>
+                                        </div>
+
+                                        @if (!string.IsNullOrEmpty(movie.Status))
+                                        {
+                                            <div class="movie-status">@movie.Status</div>
+                                        }
+                                    </div>
+
+                                    <!-- Action Button -->
+                                    <div class="action-section">
+                                        @if (movie.IsBookingOpen)
+                                        {
+                                            <button class="book-now-btn" data-movie-id="@movie.Id">
+                                                Book now
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="notify-btn" data-movie-id="@movie.Id">
+                                                Notify me
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Movie Poster Section -->
+                                <div class="movie-poster-section">
+                                    <div class="poster-wrapper">
+                                        <img src="@movie.ImageUrl" alt="@movie.Title" class="movie-poster" />
+                                        @if (!string.IsNullOrEmpty(movie.Status))
+                                        {
+                                            <div class="status-overlay">@movie.Status</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Navigation Arrows -->
+            <div class="swiper-button-next swiper-next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.5 7l4.5 5-4.5 5 1.5 1.5L16 12 10 5.5z"/> 
+                </svg>
+            </div>
+            <div class="swiper-button-prev swiper-prev">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 17l-4.5-5 4.5-5L14 5.5 8 12l6 6.5z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="swiper-progress">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include Swiper CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="~/css/movie-swiper.css" asp-append-version="true" />
+<script src="~/js/movie-swiper.js" asp-append-version="true"></script>

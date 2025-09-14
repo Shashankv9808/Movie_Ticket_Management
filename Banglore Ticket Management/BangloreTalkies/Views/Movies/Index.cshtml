@@ -1,0 +1,13 @@
+@model BangloreTalkies.Models.MoviesViewModel
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<!-- Move home page-->
+@if (Model != null)
+{
+    @await Html.PartialAsync("_MovieHome", Model)
+}
+@section Scripts {
+    <script src="~/js/movie-home.js"></script>
+}
