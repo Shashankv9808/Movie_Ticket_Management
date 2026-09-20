@@ -13,17 +13,18 @@
     </div>
 </section>
 
-<!-- Top Kannada Movies Section -->
+<!-- Top Movies Section -->
 <section class="content-section">
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Top movies near you</h2>
-            <a asp-area="" asp-controller="Home" asp-action="Movies" class="section-link">View All</a>
+            <a asp-area="" asp-controller="Movies" asp-action="Index" class="section-link">View All</a>
         </div>
 
         <div class="content-grid">
             @foreach (var movie in Model.FeaturedMovies.Take(4))
             {
+				//TODO: Click on overlay should go to booking page
                 <div class="content-card movie-card" data-id="@movie.Id">
                     <div class="card-image">
                         <img src="@movie.ImageUrl" alt="@movie.Title" loading="lazy" />
@@ -59,7 +60,7 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Offers on Activities</h2>
-            <a href="@Url.Action("Activities", "Home")" class="section-link">View All</a>
+            <a asp-area="" asp-controller="Activities" asp-action="Index" class="section-link">View All</a>
         </div>
 
         <div class="content-grid">
@@ -104,7 +105,7 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Discover the best of Music Events</h2>
-            <a href="@Url.Action("Events", "Home")" class="section-link">View All</a>
+            <a asp-area="" asp-controller="Events" asp-action="Index" class="section-link">View All</a>
         </div>
 
         <div class="content-grid">
@@ -152,7 +153,7 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Best of English movies</h2>
-            <a href="@Url.Action("Movies", "Home")" class="section-link">View All</a>
+            <a asp-area="" asp-controller="Movies" asp-action="Index" class="section-link">View All</a>
         </div>
 
         <div class="content-grid">
@@ -193,17 +194,17 @@
     <div class="container">
         <h2 class="section-title">Explore Categories</h2>
         <div class="categories-grid">
-            <a href="@Url.Action("Movies", "Home")" class="category-card">
+            <a asp-area="" asp-controller="Movies" asp-action="Index" class="category-card">
                 <div class="category-icon">🎬</div>
                 <h3 class="category-title">Movies</h3>
                 <p class="category-description">Latest releases and classics</p>
             </a>
-            <a href="@Url.Action("Index", "Events")" class="category-card">
+            <a asp-area="" asp-controller="Events" asp-action="Index" class="category-card">
                 <div class="category-icon">🎵</div>
                 <h3 class="category-title">Events</h3>
                 <p class="category-description">Concerts and live shows</p>
             </a>
-            <a href="@Url.Action("Index", "Activities")" class="category-card">
+            <a asp-area="" asp-controller="Activities" asp-action="Index" class="category-card">
                 <div class="category-icon">🎯</div>
                 <h3 class="category-title">Activities</h3>
                 <p class="category-description">Fun experiences for everyone</p>

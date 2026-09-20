@@ -41,17 +41,6 @@
         window.location.href = `/booking/movie/${movieId}`;
     });
 
-    //TODO: Notify me functionality
-    // $('.notify-me').on('click', function(e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-
-    //     const movieId = $(this).data('movie-id');
-    //     $(this).text('✓ Notified').addClass('notified');
-
-    //     console.log(`Set notification for movie ${movieId}`);
-    // });
-
     function applyFilters() {
         const activeLanguage = $('.filter-btn[data-filter].active').data('filter');
         const activeGenres = $('.filter-btn[data-genre].active').map(function () {
