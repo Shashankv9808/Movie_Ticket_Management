@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Instructions",
+    "\\Knowledge Base"
   ],
-  "SelectedNode": "\\Movie Ticket Management.sln (Legacy Movie Ticket Management\\Movie Ticket Management.sln)",
+  "SelectedNode": "\\Instructions\\migration-execution-plan.md",
   "PreviewInSolutionExplorer": false
 }
